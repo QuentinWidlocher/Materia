@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
+import controller as ctrl
 
 app = Flask(__name__, 
             static_folder = "./dist/static",
@@ -19,8 +20,9 @@ def connect():
 
 @socketio.on('message')
 def message(message):
-    print(message)
+    ctrl.add_message(message)
     emit('message', message, broadcast=True, include_self=False)
 
 if __name__ == '__main__':
+    ctrl.init()
     socketio.run(app)

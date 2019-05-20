@@ -13,9 +13,10 @@ function sendMessage() {
     const messageBox = document.querySelectorAll('#messageBox')[0];
 
     const message = {
-        username: "quentin",
-        message: messageBox.value,
-        datetime: Date.now()
+        from: "/users/1",
+        to: "/users/1",
+        body: messageBox.value,
+        date_sent: Date.now(),
     };
 
     socket.emit('message', JSON.stringify(message), (response) => {
