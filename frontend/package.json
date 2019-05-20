@@ -5,21 +5,31 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "run": "npm run-script build && cd .. && python app.py"
   },
   "dependencies": {
+    "socket.io-client": "^2.2.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0",
-    "vue-router": "^3.0.3"
+    "vue-router": "^3.0.3",
+    "vue-socket.io": "^3.0.7",
+    "vue-socket.io-extended": "^3.2.1",
+    "vuetify": "^1.5.14"
   },
   "devDependencies": {
+    "@types/socket.io-client": "^1.4.32",
     "@vue/cli-plugin-typescript": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
     "typescript": "^3.4.3",
+    "vue-cli-plugin-vuetify": "^0.5.0",
     "vue-template-compiler": "^2.5.21",
+    "vuetify-loader": "^1.0.5",
     "webpack-cli": "^3.3.2"
   },
   "postcss": {

@@ -12,9 +12,13 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "vuetify",
+      "socket.io",
+      "vue-socket.io",
     ],
     "paths": {
+        "*": ["types/*"],
       "@/*": [
         "src/*"
       ]

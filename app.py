@@ -14,12 +14,10 @@ def catch_all(path):
 
 @socketio.on('connect')
 def connect():
-    print('Connection')
     emit('welcome')
 
 @socketio.on('message')
 def message(message):
-    print(message)
     emit('message', message, broadcast=True, include_self=False)
 
 if __name__ == '__main__':
