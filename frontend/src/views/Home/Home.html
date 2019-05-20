@@ -1,0 +1,18 @@
+<div id="Home">
+    <div class="message-list">
+
+        <Talkbubble v-for="message in messages" :message="message.message" :align="message.align"/>
+        
+        <v-text-field 
+            class="input"
+            solo
+            v-model="message" 
+            :append-icon="'send'"
+            clearable
+            label="Message" 
+            type="text" 
+            @click:append="sendMessage" 
+            @click:clear="clearMessage">
+        </v-text-field>
+    </div>
+</div>

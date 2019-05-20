@@ -1,0 +1,52 @@
+.talkbubble {
+    max-width: 90%;
+    border-radius: 0.3rem;
+    color: #fff;
+    padding: 1rem;
+    position: relative;
+    max-height: fit-content;
+
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+
+    @extend .elevation-1 !optional;
+
+    $arrow-size: 0.2rem;
+
+    &:before {
+        content: "";
+        width: 0;
+        height: 0;
+        position: absolute;
+        bottom: 0;
+        @extend .elevation-1 !optional;
+    }
+
+    &.left {
+        margin-right: auto;
+        border-bottom-left-radius: 0;
+        background: var(--v-primary-base);
+
+        @at-root&:before {
+            border-left: $arrow-size solid transparent;
+            border-right: $arrow-size solid var(--v-primary-base);
+            border-top: $arrow-size solid transparent;
+            border-bottom: $arrow-size solid var(--v-primary-base);
+            left: calc(#{$arrow-size} * -2);
+        }
+    }
+
+    &.right {
+        margin-left: auto;
+        border-bottom-right-radius: 0;
+        background: var(--v-secondary-base);
+
+        @at-root&:before {
+            border-left: $arrow-size solid var(--v-secondary-base);
+            border-right: $arrow-size solid transparent;
+            border-top: $arrow-size solid transparent;
+            border-bottom: $arrow-size solid var(--v-secondary-base);
+            right: calc(#{$arrow-size} * -2);
+        }
+    }
+}

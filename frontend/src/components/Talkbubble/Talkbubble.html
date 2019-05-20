@@ -1,0 +1,8 @@
+<div class="talkbubble"
+    v-bind:class="{ 
+        right: (align === 'right'), 
+        left: (align !== 'right'),
+    }"
+>
+    {{ message }}
+</div>
