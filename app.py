@@ -1,13 +1,16 @@
 from flask import Flask, render_template
 from flask_socketio import SocketIO, send, emit
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            static_folder = "./dist/static",
+            template_folder = "./dist")
 # app.config['SECRET_KEY'] = 'wypsalbl'
 socketio = SocketIO(app)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
 
 @socketio.on('connect')
 def connect():
