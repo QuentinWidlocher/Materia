@@ -17,17 +17,12 @@
 </style>
 
 <script>
-  import Toolbar from "./components/Toolbar/Toolbar";
+  import Toolbar from './components/Toolbar/Toolbar';
 
   export default {
     name: 'App',
     components: {
       Toolbar,
     },
-    data() {
-      return {
-        //
-      }
-    }
   }
 </script>

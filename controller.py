@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, db
 import json
+import time
 
 users_db = None
 messages_db = None
@@ -9,12 +10,31 @@ def init():
     global users_db
     global messages_db
 
+    # We use the credentials.json to connect to the Direbase DB
     cred = credentials.Certificate("./credentials.json")
     firebase_admin.initialize_app(cred, options={
         'databaseURL': 'https://materia-87a70.firebaseio.com'
     })
+
+    # We assign "tables" to the vars
     users_db = db.reference('users')
     messages_db = db.reference('messages')
 
+# Adds a message in the db
 def add_message(message):
-    messages_db.push().set(json.loads(message))
+    # We create a composite key, made by the from → to
+    message['direction'] = message['from'] + '|' + message['to']
+
+    # We store the current timestamp
+    message['dateSent'] = time.time()
+
+    # We add the message
+    messages_db.push().set(message)
+
+# Returns a user with this ID
+def get_user(id):
+    return json.dumps(users_db.child(id).get())
+
+# Returns all messages FROM id_from TO id_to based on the direction composite key
+def get_messages(id_from, id_to):
+    return json.dumps(messages_db.order_by_child('direction').equal_to(id_from + '|' + id_to).get())

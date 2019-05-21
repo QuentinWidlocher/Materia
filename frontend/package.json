@@ -9,6 +9,7 @@
     "run": "npm run-script build && cd .. && python app.py"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
