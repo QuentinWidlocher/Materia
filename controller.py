@@ -13,7 +13,7 @@ def init():
     firebase_admin.initialize_app(cred, options={
         'databaseURL': 'https://materia-87a70.firebaseio.com'
     })
-    user_db = db.reference('users')
+    users_db = db.reference('users')
     messages_db = db.reference('messages')
 
 def add_message(message):

@@ -15,7 +15,6 @@ def catch_all(path):
 
 @socketio.on('connect')
 def connect():
-    print('Connection')
     emit('welcome')
 
 @socketio.on('message')
