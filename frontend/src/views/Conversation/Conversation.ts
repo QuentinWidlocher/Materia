@@ -30,6 +30,10 @@ export default class Conversation extends Vue {
 
 
     private created() {
+        
+    }
+
+    private mounted() {
         // We bind the message receiving to a function
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
 
@@ -61,6 +65,9 @@ export default class Conversation extends Vue {
             this.loadMessages(interlocutor, this.user).then((messages) => {
                 this.messages = messages;
                 this.messagesLoading = false;
+
+            }).then(() => {
+                this.scrollToBottom();
             });
         });
     }
@@ -107,6 +114,11 @@ export default class Conversation extends Vue {
         });
     }
 
+    private scrollToBottom() {
+        const container: Element = (this.$refs.messages as Element);
+        container.scrollTop = container.scrollHeight;
+    }
+
     // We the websocket gives us a message, we add it to the message list
     private receiveMessage(message: any) {
         this.messages.push(new Message(
@@ -115,6 +127,8 @@ export default class Conversation extends Vue {
             message.body,
             message.dateSent,
         ));
+
+        this.scrollToBottom();
     }
 
     private sendMessage() {
@@ -143,6 +157,10 @@ export default class Conversation extends Vue {
 
         // We clear the text field
         this.clearMessage();
+
+        setTimeout(() => {
+            this.scrollToBottom();
+        }, 10);
     }
 
     private clearMessage() {

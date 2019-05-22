@@ -1,8 +1,8 @@
 <template>
   <div id="Conversation">
     <Toolbar v-bind:title="title"></Toolbar>
-    <v-container fluid>
-        <div class="message-list">
+    <v-container fluid class="pt-0">
+        <div class="page">
 
         <v-progress-circular 
           class="ma-auto"
@@ -13,7 +13,9 @@
           :width="3"
         ></v-progress-circular>
 
+      <div ref="messages" class="message-list" v-if="!messagesLoading">
         <Talkbubble v-for="message in messages" :message="message" :align="message.from === interlocutor.id ? 'left' : 'right'"/>
+      </div>
           
         <v-text-field 
           class="input"

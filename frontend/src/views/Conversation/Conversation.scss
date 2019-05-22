@@ -1,8 +1,23 @@
-.message-list {
+.page {
     display: flex;
     flex-direction: column;
     height: stretch;
-    justify-content: flex-end;
+
+    .message-list {
+        display: flex;
+        flex-direction: column;
+        height: stretch;
+        overflow-y: scroll;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        margin-bottom: -1.5rem;
+
+        &::-webkit-scrollbar {
+            width: 0 !important;
+            overflow: -moz-scrollbars-none;
+            -ms-overflow-style: none;
+        }
+    }
 
     .input {
         max-height: fit-content;

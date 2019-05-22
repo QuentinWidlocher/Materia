@@ -11,7 +11,7 @@ export default class Message {
         this.to = to;
         this.body = body;
         this.direction = from + '|' + to;
-        this.dateSent = dateSent === 0 ? + new Date() : dateSent;
+        this.dateSent = dateSent === 0 ? + new Date().getTime() / 1000 : dateSent;
         this.sent = sent;
     }
 

@@ -21,28 +21,30 @@
 
     &.left {
         margin-right: auto;
+        margin-left: calc(#{$arrow-size} * 2);
         border-bottom-left-radius: 0;
-        background: var(--v-primary-base);
+        background: var(--v-secondary-base);
 
         @at-root&:before {
             border-left: $arrow-size solid transparent;
-            border-right: $arrow-size solid var(--v-primary-base);
+            border-right: $arrow-size solid var(--v-secondary-base);
             border-top: $arrow-size solid transparent;
-            border-bottom: $arrow-size solid var(--v-primary-base);
+            border-bottom: $arrow-size solid var(--v-secondary-base);
             left: calc(#{$arrow-size} * -2);
         }
     }
 
     &.right {
         margin-left: auto;
+        margin-right: calc(#{$arrow-size} * 2);
         border-bottom-right-radius: 0;
-        background: var(--v-secondary-base);
+        background: var(--v-primary-base);
 
         @at-root&:before {
-            border-left: $arrow-size solid var(--v-secondary-base);
+            border-left: $arrow-size solid var(--v-primary-base);
             border-right: $arrow-size solid transparent;
             border-top: $arrow-size solid transparent;
-            border-bottom: $arrow-size solid var(--v-secondary-base);
+            border-bottom: $arrow-size solid var(--v-primary-base);
             right: calc(#{$arrow-size} * -2);
         }
     }
