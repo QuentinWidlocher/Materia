@@ -5,6 +5,7 @@ import axios from 'axios';
 import { SocketInstance } from '@/plugins/socketio.ts';
 import Toolbar from '@/components/Toolbar/Toolbar.vue';
 import User from '@/classes/user';
+import ApiConfig from '@/ApiConfig.ts';
 
 @Component({
     components: {
@@ -56,8 +57,6 @@ export default class Conversation extends Vue {
 
         }).then((interlocutor) => {
 
-            console.log(interlocutor);
-
             // We fetch the messages from the server and display them
             this.loadMessages(interlocutor, this.user).then((messages) => {
                 this.messages = messages;
@@ -68,7 +67,7 @@ export default class Conversation extends Vue {
 
     private loadInterlocutor(id: string): Promise<User> {
         return new Promise((rslv) => {
-            axios.get(`http://127.0.0.1:5000/api/users/${id}`).then((interlocutor) => {
+            axios.get(ApiConfig.userUnique.replace(':id', id)).then((interlocutor) => {
                 rslv(interlocutor.data as User);
             });
         });
@@ -82,14 +81,14 @@ export default class Conversation extends Vue {
         return new Promise((rslv) => {
 
             // We fetch the messages in the interlocutor -> user direction
-            axios.get(`http://127.0.0.1:5000/api/messages/${ interlocutor.id }/${ user.id }`).then((messages) => {
+            axios.get(ApiConfig.messageDirection.replace(':idFrom', interlocutor.id).replace(':idTo', user.id)).then((messages) => {
 
                 // Firebase returns an object with messages as properties of this object
                 // Here we transform the objet in an array of messages
                 messagesLeft = Object.keys(messages.data).map((i) => messages.data[i]) as Message[];
 
                 // We fetch the messages in the user -> interlocutor direction
-                return axios.get(`http://127.0.0.1:5000/api/messages/${ user.id }/${ interlocutor.id }`);
+                return axios.get(ApiConfig.messageDirection.replace(':idFrom', user.id).replace(':idTo', interlocutor.id));
 
             }).then((messages) => {
 
