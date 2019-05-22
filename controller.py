@@ -33,7 +33,9 @@ def add_message(message):
 
 # Returns a user with this ID
 def get_user(id):
-    return json.dumps(users_db.child(id).get())
+    user = users_db.child(id).get()
+    user['id'] = id
+    return json.dumps(user)
 
 # Returns all messages FROM id_from TO id_to based on the direction composite key
 def get_messages(id_from, id_to):

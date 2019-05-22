@@ -7,7 +7,7 @@
     max-height: fit-content;
 
     margin-top: 0.2rem;
-    margin-bottom: 0.2rem;  
+    margin-bottom: 0.2rem;
 
     $arrow-size: 0.2rem;
 
@@ -16,7 +16,7 @@
         width: 0;
         height: 0;
         position: absolute;
-        bottom: 0;        
+        bottom: 0;
     }
 
     &.left {
@@ -45,5 +45,18 @@
             border-bottom: $arrow-size solid var(--v-secondary-base);
             right: calc(#{$arrow-size} * -2);
         }
+    }
+
+    .time {
+        position: relative;
+        bottom: -7px;
+        float: right;
+        right: 0;
+        opacity: 0.4;
+        font-size: smaller;
+    }
+
+    .body {
+        margin-right: 1rem;
     }
 }

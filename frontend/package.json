@@ -13,10 +13,12 @@
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
+    "vue-moment": "^4.0.0",
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.3",
     "vue-socket.io": "^3.0.7",
     "vue-socket.io-extended": "^3.2.1",
+    "vue2-filters": "^0.6.0",
     "vuetify": "^1.5.14"
   },
   "devDependencies": {

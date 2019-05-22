@@ -3,4 +3,13 @@
         right: (align === 'right'), 
         left: (align !== 'right'),
     }"
->{{ message }}</div>
+>
+<span class="body">{{ message.body }}</span>
+<span class="time">
+    {{ new Date(message.dateSent * 1000) | moment("kk:mm") }}
+    <template v-if="align === 'right'">
+        <v-icon v-if="message.sent === false" class="ml-1" small color="white">access_time</v-icon>
+        <v-icon v-if="message.sent === undefined || message.sent" class="ml-1" small color="white">done</v-icon>
+    </template>
+</span>
+</div>

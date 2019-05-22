@@ -1,12 +1,8 @@
+<template>
+    <v-toolbar>
+        <v-toolbar-title>{{title | capitalize}}</v-toolbar-title>
+        <v-spacer></v-spacer>
+    </v-toolbar>
+</template>
 <style lang="scss" scoped src="./Toolbar.scss"></style>
-<template src="./Toolbar.html"></template>
-<script lang="ts">
-
-import { Component, Vue, Prop } from 'vue-property-decorator';
-
-@Component
-export default class Toolbar extends Vue {
-    @Prop() private title: string;
-}
-
-</script>
+<script lang="ts" src="./Toolbar.ts"></script>

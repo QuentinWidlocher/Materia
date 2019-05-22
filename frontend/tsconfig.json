@@ -17,6 +17,7 @@
       "vuetify",
       "socket.io",
       "vue-socket.io",
+      "vue2-filters",
     ],
     "paths": {
         "*": ["types/*"],
