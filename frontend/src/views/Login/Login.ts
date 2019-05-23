@@ -5,6 +5,7 @@ import ApiConfig from '@/ApiConfig.ts';
 import router from '@/router';
 import { userService } from '@/services/UserService.ts';
 import User from '@/classes/user';
+import { sha256 } from 'js-sha256';
 
 @Component({
     components: {
@@ -40,7 +41,7 @@ export default class Conversation extends Vue {
 
         axios.post(ApiConfig.userLogin, {
             username: this.username,
-            password: this.password,
+            password: sha256(this.password),
         }).then((response) => {
             if (!response.data.valid) {
                 this.error = response.data.error;
