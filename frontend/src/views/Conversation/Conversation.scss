@@ -1,27 +1,37 @@
-.page {
-    display: flex;
-    flex-direction: column;
-    height: stretch;
+.v-toolbar {
+    z-index: 1;
+}
 
-    .message-list {
+.container {
+    height: calc(100vh - 4rem);
+
+    .page {
         display: flex;
         flex-direction: column;
-        height: stretch;
-        overflow-y: scroll;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        margin-bottom: -1.5rem;
-
-        &::-webkit-scrollbar {
-            width: 0 !important;
-            overflow: -moz-scrollbars-none;
-            -ms-overflow-style: none;
+        height: 100%;
+    
+        .message-list {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: -2.5rem;
+    
+            &::-webkit-scrollbar {
+                width: 0 !important;
+                overflow: -moz-scrollbars-none;
+                -ms-overflow-style: none;
+            }
+        }
+    
+        .input {
+            position: relative;
+            bottom: -2rem;
+            flex-grow: 0;
         }
     }
 
-    .input {
-        max-height: fit-content;
-        margin-top: 1rem;
-        margin-bottom: -2rem;
-    }
 }
