@@ -8,5 +8,6 @@ export default class ApiConfig {
 
     public static messageBase: string = ApiConfig.apiBase + '/messages';
     public static messageDirection: string = ApiConfig.messageBase + '/:idFrom/:idTo';
+    public static messageLast: string = ApiConfig.messageDirection + '/last';
 
 }

@@ -6,8 +6,7 @@ import controller as ctrl
 app = Flask(__name__, 
             static_folder = "./dist/static",
             template_folder = "./dist")
-cors = CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 socketio = SocketIO(app)
 
 json = {"content-type": "application/json"}
@@ -15,6 +14,12 @@ json = {"content-type": "application/json"}
 ##
 ### API
 ##
+
+# Get all users
+@app.route('/api/users/', methods=['GET'])
+@cross_origin()
+def get_all_users():
+    return ctrl.get_all_users(), json
 
 # Get a user
 @app.route('/api/users/<id>', methods=['GET'])
@@ -27,6 +32,12 @@ def get_user(id):
 @cross_origin()
 def login():
     return ctrl.login(request.get_json()), json
+
+# Get the first message of a conversation
+@app.route('/api/messages/<id_from>/<id_to>/last', methods=['GET'])
+@cross_origin()
+def get_last_message(id_from, id_to):
+    return ctrl.get_last_message(id_from, id_to), json
     
 # Get all messages FROM id_from TO id_to
 @app.route('/api/messages/<id_from>/<id_to>', methods=['GET'])

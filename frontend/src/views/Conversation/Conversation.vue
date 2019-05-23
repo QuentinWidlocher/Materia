@@ -1,6 +1,6 @@
 <template>
   <div id="Conversation">
-    <Toolbar v-bind:title="title"></Toolbar>
+    <Toolbar :title="title" :button="{ action: 'back' }"></Toolbar>
     <v-container fluid class="pt-0">
         <div class="page">
 

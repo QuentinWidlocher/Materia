@@ -17,6 +17,8 @@ import router from '@/router';
 })
 export default class Conversation extends Vue {
 
+    @Prop() private interlocutorId: string;
+
     // Message typed in the bottom text field
     private message: string = '';
 
@@ -40,10 +42,8 @@ export default class Conversation extends Vue {
 
         this.user = userService.currentUser;
 
-        const idInterlocutor = (this.user.id === '1' ? '2' : '1');
-
         // First we load the interlocutor based on his ID
-        this.loadInterlocutor(idInterlocutor).then((interlocutor) => {
+        this.loadInterlocutor(this.interlocutorId).then((interlocutor) => {
 
             // We store the interlocutor
             this.interlocutor = interlocutor;
@@ -86,14 +86,14 @@ export default class Conversation extends Vue {
 
                 // Firebase returns an object with messages as properties of this object
                 // Here we transform the objet in an array of messages
-                messagesLeft = Object.keys(messages.data).map((i) => messages.data[i]) as Message[];
+                messagesLeft = messages.data as Message[];
 
                 // We fetch the messages in the user -> interlocutor direction
                 return axios.get(ApiConfig.messageDirection.replace(':idFrom', user.id).replace(':idTo', interlocutor.id));
 
             }).then((messages) => {
 
-                messagesRight = Object.keys(messages.data).map((i) => messages.data[i]) as Message[];
+                messagesRight = messages.data as Message[];
 
             }).then(() => {
 

@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, db
 import json
 import time
+from operator import attrgetter
 
 users_db = None
 messages_db = None
@@ -37,9 +38,47 @@ def get_user(id):
     user["id"] = id
     return json.dumps(user)
 
+# Returns a user with this ID
+def get_all_users():
+    users_odict = users_db.order_by_child("username").start_at("0").get()
+    users = list(users_odict.values())
+    users_items = list(users_odict.items())
+
+    for key, value in users_items:
+        users[users.index(value)]["id"] = key
+
+    return json.dumps(users)
+
 # Returns all messages FROM id_from TO id_to based on the direction composite key
 def get_messages(id_from, id_to):
-    return json.dumps(messages_db.order_by_child("direction").equal_to(id_from + "|" + id_to).get())
+    messages_odict = messages_db.order_by_child("direction").equal_to(id_from + "|" + id_to).get()
+    messages = list(messages_odict.values())
+    messages_items = list(messages_odict.items())
+
+    for key, value in messages_items:
+        messages[messages.index(value)]["id"] = key
+
+    return json.dumps(messages)
+
+def get_last_message(id_from, id_to):
+    last_messages = [None] * 2
+
+    message = messages_db.order_by_child("direction").equal_to(id_from + "|" + id_to).limit_to_last(1).get()
+    if not message:
+        return json.dumps({})
+
+    last_messages[0] = list(message.values())[0]
+    last_messages[0]["id"] = list(message.keys())[0]
+    
+
+    message = messages_db.order_by_child("direction").equal_to(id_to + "|" + id_from).limit_to_last(1).get()
+    if not message:
+        return json.dumps({})
+
+    last_messages[1] = list(message.values())[0]
+    last_messages[1]["id"] = list(message.keys())[0]
+
+    return json.dumps(max(last_messages, key=lambda x: x['dateSent']))
 
 # Try to login
 def login(body):
