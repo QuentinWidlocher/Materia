@@ -6,6 +6,8 @@ import { SocketInstance } from '@/plugins/socketio.ts';
 import Toolbar from '@/components/Toolbar/Toolbar.vue';
 import User from '@/classes/user';
 import ApiConfig from '@/ApiConfig.ts';
+import { userService } from '@/services/UserService.ts';
+import router from '@/router';
 
 @Component({
     components: {
@@ -28,23 +30,15 @@ export default class Conversation extends Vue {
     private messages: Message[] = [];
     private messagesLoading: boolean = true;
 
-
-    private created() {
-        
-    }
-
     private mounted() {
         // We bind the message receiving to a function
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
 
-        // TODO: Replace this with a authentification system
-        let value: string | null = '';
-        while (value === '') {
-            value = window.prompt('Entrez un ID d\'utilisateur', '1');
-            value = value === null ? '' : value;
+        if (!userService.currentUser) {
+            router.push('/login');
         }
-        this.user.id = value;
-        //
+
+        this.user = userService.currentUser;
 
         const idInterlocutor = (this.user.id === '1' ? '2' : '1');
 

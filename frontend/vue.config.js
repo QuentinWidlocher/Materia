@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-    baseUrl: '',
+    publicPath: '',
     outputDir: path.resolve(__dirname, "../dist"),
     assetsDir: 'static'
 }

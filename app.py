@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS, cross_origin
 import controller as ctrl
@@ -10,21 +10,30 @@ cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 socketio = SocketIO(app)
 
+json = {"content-type": "application/json"}
+
 ##
 ### API
 ##
 
 # Get a user
-@app.route('/api/users/<id>')
+@app.route('/api/users/<id>', methods=['GET'])
 @cross_origin()
 def get_user(id):
-    return ctrl.get_user(id)
+    return ctrl.get_user(id), json
 
+# Try to login
+@app.route('/api/users/login/', methods=['POST'])
+@cross_origin()
+def login():
+    return ctrl.login(request.get_json()), json
+    
 # Get all messages FROM id_from TO id_to
-@app.route('/api/messages/<id_from>/<id_to>')
+@app.route('/api/messages/<id_from>/<id_to>', methods=['GET'])
 @cross_origin()
 def get_messages(id_from, id_to):
-    return ctrl.get_messages(id_from, id_to)
+    return ctrl.get_messages(id_from, id_to), json
+
 
 
 ##

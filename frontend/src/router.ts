@@ -1,17 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Conversation from '@/views/Conversation/Conversation.vue';
+import Login from '@/views/Login/Login.vue';
 
 Vue.use(Router);
 
 export default new Router({
-  // mode: 'history',
+  mode: 'history',
   base: process.env.BASE_URL,
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Conversation,
-    },
+    { path: '/', redirect: { name: 'conversation' }},
+    { path: '/conversation', name: 'conversation', component: Conversation },
+    { path: '/login', name: 'login', component: Login },
   ],
 });

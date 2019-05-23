@@ -34,9 +34,26 @@ def add_message(message):
 # Returns a user with this ID
 def get_user(id):
     user = users_db.child(id).get()
-    user['id'] = id
+    user["id"] = id
     return json.dumps(user)
 
 # Returns all messages FROM id_from TO id_to based on the direction composite key
 def get_messages(id_from, id_to):
-    return json.dumps(messages_db.order_by_child('direction').equal_to(id_from + '|' + id_to).get())
+    return json.dumps(messages_db.order_by_child("direction").equal_to(id_from + "|" + id_to).get())
+
+# Try to login
+def login(body):
+    user = users_db.order_by_child("username").equal_to(body["username"]).get()
+
+    if (not user):
+        return json.dumps({"valid": False, "error": "Username not found"})
+
+    user_id = list(user.keys())[0]
+    user = list(user.values())[0]
+    user["id"] = user_id
+
+    if (user["password"] != body["password"]):
+        return json.dumps({"valid": False, "error": "Wrong password."})
+    
+    return json.dumps({"valid": True, "user": user})
+    
