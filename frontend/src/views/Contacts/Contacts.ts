@@ -4,7 +4,7 @@ import User from '@/classes/user';
 import Message from '@/classes/message';
 import Axios from 'axios';
 import ApiConfig from '@/ApiConfig';
-import { userService } from '@/services/UserService';
+import { userService, UserService } from '@/services/UserService';
 import router from '@/router';
 
 class ContactRow {
@@ -20,13 +20,11 @@ class ContactRow {
 export default class Contacts extends Vue {
     private title: string = 'Materia';
 
+    private userService: UserService = userService;
+
     private contacts: ContactRow[] = [];
 
     private created() {
-        if (!userService.currentUser) {
-            router.push('/login');
-        }
-
         this.loadContacts().then((contacts: ContactRow[]) => this.contacts = contacts);
     }
 
@@ -40,13 +38,18 @@ export default class Contacts extends Vue {
 
             users.forEach((user: User) => {
 
-                if (user.id === userService.currentUser.id) {
+                if (user.id === this.userService.currentUser.id) {
                     return;
                 }
 
                 promises.push(new Promise((rslv) => {
-                    Axios.get(ApiConfig.messageLast.replace(':idFrom', user.id).replace(':idTo', userService.currentUser.id)).then((messageResponse) => {
-                        contacts.push({ user, lastMessage: messageResponse.data });
+                    const newContact: ContactRow = new ContactRow();
+                    newContact.user = user;
+
+                    Axios.get(ApiConfig.messageLast.replace(':idFrom', user.id).replace(':idTo', this.userService.currentUser.id)).then((messageResponse) => {
+                        newContact.lastMessage = messageResponse.data;
+                    }).finally(() => {
+                        contacts.push(newContact);
                         rslv();
                     });
                 }));

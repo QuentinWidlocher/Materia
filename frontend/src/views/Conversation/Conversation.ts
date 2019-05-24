@@ -36,10 +36,6 @@ export default class Conversation extends Vue {
         // We bind the message receiving to a function
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
 
-        if (!userService.currentUser) {
-            router.push('/login');
-        }
-
         this.user = userService.currentUser;
 
         // First we load the interlocutor based on his ID

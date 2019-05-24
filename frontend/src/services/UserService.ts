@@ -1,8 +1,9 @@
-import User from "@/classes/user";
+import User from '@/classes/user';
 
-class UserService {
+export class UserService {
     public currentUser: User;
 
+    // tslint:disable-next-line: no-empty
     constructor() {
     }
 }

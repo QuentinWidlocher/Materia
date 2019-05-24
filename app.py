@@ -17,11 +17,13 @@ json = {"content-type": "application/json"}
 
 # Get all users
 @app.route('/api/users/', methods=['GET'])
+@app.route('/api/users', methods=['GET'])
 @cross_origin()
 def get_all_users():
     return ctrl.get_all_users(), json
 
 # Get a user
+@app.route('/api/users/<id>/', methods=['GET'])
 @app.route('/api/users/<id>', methods=['GET'])
 @cross_origin()
 def get_user(id):
@@ -29,17 +31,20 @@ def get_user(id):
 
 # Try to login
 @app.route('/api/users/login/', methods=['POST'])
+@app.route('/api/users/login', methods=['POST'])
 @cross_origin()
 def login():
     return ctrl.login(request.get_json()), json
 
 # Get the first message of a conversation
+@app.route('/api/messages/<id_from>/<id_to>/last/', methods=['GET'])
 @app.route('/api/messages/<id_from>/<id_to>/last', methods=['GET'])
 @cross_origin()
 def get_last_message(id_from, id_to):
     return ctrl.get_last_message(id_from, id_to), json
     
 # Get all messages FROM id_from TO id_to
+@app.route('/api/messages/<id_from>/<id_to>/', methods=['GET'])
 @app.route('/api/messages/<id_from>/<id_to>', methods=['GET'])
 @cross_origin()
 def get_messages(id_from, id_to):

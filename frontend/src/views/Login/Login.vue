@@ -22,6 +22,7 @@
                     v-model="username"
                     :rules="usernameRules"
                     label="Username"
+                    autocomplete="username"
                     required
                 ></v-text-field>
 
@@ -29,6 +30,7 @@
                     v-model="password"
                     :rules="passwordRules"
                     label="Password"
+                    autocomplete="current-password"
                     :type="showPassword ? 'text' : 'password'"
                     :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                     @click:append="showPassword = !showPassword"
@@ -36,7 +38,8 @@
                 ></v-text-field>
 
                 <v-btn
-                    :disabled="!valid"
+                    :disabled="!valid || loading"
+                    :loading="loading"
                     color="primary"
                     @click="login"
                 >

@@ -2,3 +2,106 @@
       height: calc(100vh - 4rem);
       overflow-y: hidden;
   }
+
+.slide-right {
+
+  &-enter {
+    position: absolute;
+    left: 100vw;
+    width: 100vw;
+    z-index: 3;
+  }
+
+  &-enter-to {
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    z-index: 3;
+  }
+
+  &-enter-active, &-leave-active, &-leave-active::before {
+    transition: all .5s cubic-bezier(.4, 0, .2, 1);
+  }
+
+  &-leave {
+    position: absolute;
+    width: 100vw;
+
+    &::before {
+      content: '';
+      background-color: black;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      z-index: 2;
+      opacity: 0;
+    }
+  }
+
+  &-leave-to {
+    position: absolute;
+    width: 100vw;
+
+    &::before {
+      content: '';
+      background-color: black;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      z-index: 2;
+      opacity: 0.3;
+    }
+  }
+}
+
+.slide-left {
+
+  &-leave {
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    z-index: 3;
+  }
+
+  &-leave-to {
+    position: absolute;
+    left: 100vw;
+    width: 100vw;
+    z-index: 3;
+  }
+
+  &-enter-active::before,
+  &-leave-active {
+    transition: all .5s cubic-bezier(.4, 0, .2, 1);
+  }
+
+  &-enter {
+    position: absolute;
+    width: 100vw;
+
+    &::before {
+      content: '';
+      background-color: black;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      z-index: 2;
+      opacity: 0.3;
+    }
+  }
+
+  &-enter-to {
+    position: absolute;
+    width: 100vw;
+
+    &::before {
+      content: '';
+      background-color: black;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      z-index: 2;
+      opacity: 0;
+    }
+  }
+}

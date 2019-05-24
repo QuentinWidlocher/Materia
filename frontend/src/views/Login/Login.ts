@@ -17,6 +17,7 @@ export default class Conversation extends Vue {
     private title: string = 'Login';
 
     private valid: boolean = false;
+    private loading: boolean = false;
 
     private username: string = '';
     private usernameRules = [
@@ -34,6 +35,7 @@ export default class Conversation extends Vue {
 
     private login() {
         this.error = '';
+        this.loading = true;
 
         if (!(this.$refs.form as any).validate()) {
             return;
@@ -43,13 +45,15 @@ export default class Conversation extends Vue {
             username: this.username,
             password: sha256(this.password),
         }).then((response) => {
+            this.loading = false;
+
             if (!response.data.valid) {
                 this.error = response.data.error;
                 return;
             }
 
             userService.currentUser = response.data.user;
-            router.push('/');
+            router.go(-1);
         });
     }
 
