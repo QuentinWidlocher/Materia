@@ -31,7 +31,6 @@ export default class Talkbubble extends Vue {
     }
 
     private logout() {
-        userService.currentUser = undefined;
         router.push('login');
     }
 }

@@ -1,6 +1,7 @@
 <template>
     <v-navigation-drawer
       v-model="display"
+      v-show="display"
       absolute
       temporary
     >

@@ -65,7 +65,7 @@ export default class Contacts extends Vue {
 
             return Promise.all(promises);
         }).then(() => {
-            return contacts;
+            return contacts.sort((a: ContactRow, b: ContactRow) => a.lastMessage.dateSent - b.lastMessage.dateSent);
         });
     }
 

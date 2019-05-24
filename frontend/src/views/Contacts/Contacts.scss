@@ -10,5 +10,16 @@
     .v-list {
         height: 100%;
         background: inherit;
+
+        .v-list__tile__sub-title {
+            display: flex;
+
+            .time {
+                margin-left: auto;
+                font-size: smaller;
+                opacity: 0.4;
+            }
+        }
+
     }
 }
