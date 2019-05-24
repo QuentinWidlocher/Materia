@@ -1,10 +1,10 @@
-![Materia](http://images2.wikia.nocookie.net/__cb20111023030348/finalfantasy/images/4/4b/Dissidia_-_Cloud_Crystal.png)
+![Materia](/frontend/src/assets/logo.png)
 
 # Materia
 
 ## What is Materia
 
-Materia is a websocket chat client made with flask and socket.io .
+Materia is a websocket chat client made with flask, socket.io and Vue JS.
 Its goal is not to be better than the others, it's only a training.
 
 ## What is Materia made of ?
@@ -23,7 +23,7 @@ Its goal is not to be better than the others, it's only a training.
 
 ### 1) Setup the virtual environement
 
-```sh
+```
 # Linux
 python3 -m venv venv
 
@@ -33,7 +33,7 @@ py -3 -m venv venv
 
 ### 2) Activate the virtual environement
 
-```sh
+```
 # Linux
 . venv/bin/activate
 
@@ -43,13 +43,13 @@ venv\Scripts\activate
 
 ### 3) Install python requirements
 
-```sh
+```
 pip install -r requirements.txt
 ```
 
 ### 4) Install npm requirements
 
-```sh
+```
 ./> npm install
 ./> cd frontend
 ./frontend> npm install
@@ -57,13 +57,13 @@ pip install -r requirements.txt
 
 ### 5) Build the frontend
 
-```sh
+```
 ./frontend> npm run-script build
 ```
 
 ### 6) Launch the flask server
 
-```sh
+```
 ./frontend> cd ..
 ./> python app.py
 ```

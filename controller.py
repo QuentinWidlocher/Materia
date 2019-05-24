@@ -64,19 +64,14 @@ def get_last_message(id_from, id_to):
     last_messages = [None] * 2
 
     message = messages_db.order_by_child("direction").equal_to(id_from + "|" + id_to).limit_to_last(1).get()
-    if not message:
-        return json.dumps({})
-
-    last_messages[0] = list(message.values())[0]
-    last_messages[0]["id"] = list(message.keys())[0]
-    
-
+    if message:
+        last_messages[0] = list(message.values())[0]
+        last_messages[0]["id"] = list(message.keys())[0]
+        
     message = messages_db.order_by_child("direction").equal_to(id_to + "|" + id_from).limit_to_last(1).get()
-    if not message:
-        return json.dumps({})
-
-    last_messages[1] = list(message.values())[0]
-    last_messages[1]["id"] = list(message.keys())[0]
+    if message:
+        last_messages[1] = list(message.values())[0]
+        last_messages[1]["id"] = list(message.keys())[0]
 
     return json.dumps(max(last_messages, key=lambda x: x['dateSent']))
 

@@ -110,15 +110,12 @@ export default class Conversation extends Vue {
     }
 
     // We the websocket gives us a message, we add it to the message list
-    private receiveMessage(message: any) {
-        this.messages.push(new Message(
-            message.from,
-            message.to,
-            message.body,
-            message.dateSent,
-        ));
+    private receiveMessage(message: Message) {
+        this.messages.push(message);
 
-        this.scrollToBottom();
+        setTimeout(() => {
+            this.scrollToBottom();
+        }, 10);
     }
 
     private sendMessage() {

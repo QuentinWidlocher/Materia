@@ -14,7 +14,7 @@
         ></v-progress-circular>
 
       <div ref="messages" class="message-list" v-if="!messagesLoading">
-        <Talkbubble v-for="message in messages" :message="message" :align="message.from === interlocutor.id ? 'left' : 'right'"/>
+        <Talkbubble v-for="message in messages" :message="message" v-bind:key="message.id" :align="message.from === interlocutor.id ? 'left' : 'right'"/>
       </div>
           
         <v-text-field 

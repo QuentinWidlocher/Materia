@@ -1,4 +1,10 @@
 #Contacts {
     height: calc(100vh - 4rem);
     background-color: white;
+
+    .page {
+        display: flex;
+        height: 100%;
+        width: 100%;
+    }
 }

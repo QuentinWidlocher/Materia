@@ -23,9 +23,13 @@ export default class Contacts extends Vue {
     private userService: UserService = userService;
 
     private contacts: ContactRow[] = [];
+    private contactsLoading: boolean = true;
 
     private created() {
-        this.loadContacts().then((contacts: ContactRow[]) => this.contacts = contacts);
+        this.loadContacts().then((contacts: ContactRow[]) => {
+            this.contacts = contacts;
+            this.contactsLoading = false;
+        });
     }
 
     private loadContacts(): Promise<ContactRow[]> {
