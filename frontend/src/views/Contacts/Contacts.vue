@@ -1,7 +1,7 @@
 <template>
   <keep-alive>
     <div id="Contacts">
-      <Toolbar :title="title"></Toolbar>
+      <Toolbar :title="title" :button="{ action: 'sidenav' }"></Toolbar>
 
       <div class="page" v-if="contactsLoading">
         <v-progress-circular 
@@ -13,8 +13,8 @@
         ></v-progress-circular>
       </div>
 
-        <v-list two-line v-for="contact in contacts" v-bind:key="contact.user.id">
-            <v-list-tile @click="gotoConversation(contact.user.id)">
+        <v-list two-line>
+            <v-list-tile v-for="contact in contacts" v-bind:key="contact.user.id" @click="gotoConversation(contact.user.id)">
               <v-list-tile-content>
                 <v-list-tile-title>{{ contact.user.username }}</v-list-tile-title>
                 <v-list-tile-sub-title>

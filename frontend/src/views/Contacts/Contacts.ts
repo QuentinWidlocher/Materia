@@ -26,6 +26,9 @@ export default class Contacts extends Vue {
     private contactsLoading: boolean = true;
 
     private created() {
+
+        // We load all the contacts and display them
+        // TODO: Load only users contacts
         this.loadContacts().then((contacts: ContactRow[]) => {
             this.contacts = contacts;
             this.contactsLoading = false;
@@ -40,6 +43,7 @@ export default class Contacts extends Vue {
 
             const promises: Array<Promise<void>> = [];
 
+            // We get the last message sent in the conversation between the user and all others
             users.forEach((user: User) => {
 
                 if (user.id === this.userService.currentUser.id) {

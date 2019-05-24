@@ -80,7 +80,7 @@ def message(message):
     ctrl.add_message(message)
 
     # We transmit the message to everyone else
-    # TODO: use a room system to transmit only to concerned people
+    # TODO: Use a room system to transmit only to concerned people
     emit('message', message, broadcast=True, include_self=False)
 
 if __name__ == '__main__':

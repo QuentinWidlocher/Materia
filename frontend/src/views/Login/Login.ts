@@ -45,10 +45,10 @@ export default class Conversation extends Vue {
             username: this.username,
             password: sha256(this.password),
         }).then((response) => {
-            this.loading = false;
 
             if (!response.data.valid) {
                 this.error = response.data.error;
+                this.loading = false;
                 return;
             }
 

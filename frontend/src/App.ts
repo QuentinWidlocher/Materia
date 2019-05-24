@@ -1,18 +1,25 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-
-import { userService } from './services/UserService';
 import { Watch } from 'vue-property-decorator';
 import { Route } from 'vue-router';
+
+import { userService } from './services/UserService';
+import { globalVariableService, GlobalVariableService } from './services/GlobalVariableService';
 
 @Component
 export default class App extends Vue {
     private transitionName: string = '';
+    private globalVariables: GlobalVariableService;
+
+    private created() {
+        this.globalVariables = globalVariableService;
+        globalVariableService.eventHub.$on('update', () => this.$forceUpdate());
+    }
 
     @Watch('$route')
     private onRouteChange(to: Route, from: Route) {
-        if (from.name === 'login') {
-            this.transitionName = 'fade';
+        if (from.name === 'login' || to.name === 'login') {
+            this.transitionName = 'fade-transition';
             return;
         }
 

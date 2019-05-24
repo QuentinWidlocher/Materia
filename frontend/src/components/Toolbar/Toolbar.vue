@@ -1,11 +1,15 @@
 <template>
-    <v-toolbar>
-        <v-toolbar-side-icon v-if="button">
-            <v-icon @click="goBack()" v-if="button.action === 'back'">arrow_back</v-icon>
+<div id="Toolbar">
+    <v-toolbar :color="'primary'">
+        <v-toolbar-side-icon v-if="button" @click="doAction()">
+            <v-icon v-if="button.action === 'back'">arrow_back</v-icon>
+            <v-icon v-if="button.action === 'sidenav'">menu</v-icon>
         </v-toolbar-side-icon>
-        <v-toolbar-title>{{title | capitalize}}</v-toolbar-title>
+        <v-toolbar-title>{{ title | capitalize }}</v-toolbar-title>
         <v-spacer></v-spacer>
     </v-toolbar>
+    <Sidenav :display="showSidenav"/>
+</div>
 </template>
-<style lang="scss" scoped src="./Toolbar.scss"></style>
+<!-- <style lang="scss" scoped src="./Toolbar.scss"></style> -->
 <script lang="ts" src="./Toolbar.ts"></script>

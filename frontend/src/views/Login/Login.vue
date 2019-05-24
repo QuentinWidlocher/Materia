@@ -7,6 +7,7 @@
                 ref="form"
                 v-model="valid"
                 lazy-validation
+                @keyup.enter.native="login"
             >
                 <v-alert
                     :value="error !== ''"

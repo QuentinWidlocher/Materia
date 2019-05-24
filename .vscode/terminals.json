@@ -1,0 +1,23 @@
+{
+  "autorun": false,
+  "terminals": [
+    {
+      "name": "Flask Server",
+      "description": "Launch the Flask webserver",
+      "focus": false,
+      "commands": [
+        "venv\\Scripts\\activate",
+        "python app.py"
+      ]
+    },
+    {
+      "name": "Vue Frontend",
+      "description": "Serve the Vue frontend",
+      "focus": true,
+      "commands": [
+        "cd frontend",
+        "npm run serve"
+      ]
+    }
+  ]
+}

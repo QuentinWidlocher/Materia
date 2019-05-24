@@ -111,8 +111,17 @@ export default class Conversation extends Vue {
 
     // We the websocket gives us a message, we add it to the message list
     private receiveMessage(message: Message) {
+
+        // For now, we just ignore if the message doesn't concern us
+        // TODO: Use rooms to send messages to concerned people only
+        if (message.from !== userService.currentUser.id && message.from !== this.interlocutor.id) {
+            return;
+        }
+
         this.messages.push(message);
 
+        // We need the UI to refresh before accessing $refs, 10ms is enough
+        // TODO: Find something better, it's really ugly
         setTimeout(() => {
             this.scrollToBottom();
         }, 10);
@@ -145,6 +154,8 @@ export default class Conversation extends Vue {
         // We clear the text field
         this.clearMessage();
 
+        // We need the UI to refresh before accessing $refs, 10ms is enough
+        // TODO: Find something better, it's really ugly
         setTimeout(() => {
             this.scrollToBottom();
         }, 10);

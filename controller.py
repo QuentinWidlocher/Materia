@@ -73,7 +73,17 @@ def get_last_message(id_from, id_to):
         last_messages[1] = list(message.values())[0]
         last_messages[1]["id"] = list(message.keys())[0]
 
-    return json.dumps(max(last_messages, key=lambda x: x['dateSent']))
+    # TODO: Refactor
+    if not last_messages[0] and not last_messages[1]:
+        return json.dumps({})
+    elif not last_messages[1]:
+        return json.dumps(last_messages[0])
+    elif not last_messages[0]:
+        return json.dumps(last_messages[1])
+    else:
+        return json.dumps(max(last_messages, key=lambda x: x['dateSent']))
+
+
 
 # Try to login
 def login(body):

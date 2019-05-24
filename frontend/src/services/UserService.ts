@@ -1,11 +1,7 @@
 import User from '@/classes/user';
 
 export class UserService {
-    public currentUser: User;
-
-    // tslint:disable-next-line: no-empty
-    constructor() {
-    }
+    public currentUser?: User;
 }
 
-export const userService: UserService = new UserService();
+export const userService: UserService = {};

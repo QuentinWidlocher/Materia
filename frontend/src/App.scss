@@ -1,29 +1,35 @@
-  .v-content {
-      height: calc(100vh - 4rem);
-      overflow-y: hidden;
+html {
+  overflow-y: hidden !important;
+}
+
+.v-toolbar.theme--light.primary {
+  color: white;
+  .v-icon {
+    color: white;
   }
+}
+
+.v-content {
+    height: calc(100vh - 4rem);
+    overflow-y: hidden;
+}
 
 .slide-right {
 
   &-enter {
-    position: absolute;
-    left: 100vw;
-    width: 100vw;
-    z-index: 3;
+    transform: translateX(100vw);
   }
-
   &-enter-to {
-    position: absolute;
-    left: 0;
-    width: 100vw;
-    z-index: 3;
+    transform: translateX(0);
   }
 
+  // The animation
   &-enter-active, &-leave-active, &-leave-active::before {
     transition: all .5s cubic-bezier(.4, 0, .2, 1);
   }
 
-  &-leave {
+  // What doesn't change
+  &-leave, &-leave-to {
     position: absolute;
     width: 100vw;
 
@@ -34,65 +40,39 @@
       height: 100vh;
       position: absolute;
       z-index: 2;
-      opacity: 0;
     }
   }
 
-  &-leave-to {
-    position: absolute;
-    width: 100vw;
-
-    &::before {
-      content: '';
-      background-color: black;
-      width: 100vw;
-      height: 100vh;
-      position: absolute;
-      z-index: 2;
+  // What changes
+  &-leave::before {
+      opacity: 0;
+  }
+  &-leave-to::before {
       opacity: 0.3;
-    }
   }
 }
 
 .slide-left {
 
   &-leave {
-    position: absolute;
-    left: 0;
-    width: 100vw;
-    z-index: 3;
+    transform: translateX(0);
   }
 
   &-leave-to {
-    position: absolute;
-    left: 100vw;
-    width: 100vw;
-    z-index: 3;
+    transform: translateX(100vw);
   }
 
+  &-enter-active,
   &-enter-active::before,
   &-leave-active {
     transition: all .5s cubic-bezier(.4, 0, .2, 1);
   }
 
-  &-enter {
-    position: absolute;
-    width: 100vw;
-
-    &::before {
-      content: '';
-      background-color: black;
-      width: 100vw;
-      height: 100vh;
-      position: absolute;
-      z-index: 2;
-      opacity: 0.3;
-    }
-  }
-
+  &-enter,
   &-enter-to {
     position: absolute;
     width: 100vw;
+    top:0;
 
     &::before {
       content: '';
@@ -100,8 +80,14 @@
       width: 100vw;
       height: 100vh;
       position: absolute;
-      z-index: 2;
-      opacity: 0;
     }
+  }
+
+  &-enter::before{
+    opacity: 0;
+  }
+
+  &-enter-to::before {
+    opacity: 0.3;
   }
 }

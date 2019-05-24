@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app :dark="globalVariables.darkMode">
     <v-content>
       <transition :name="transitionName">
         <router-view/>
@@ -7,5 +7,5 @@
     </v-content>
   </v-app>
 </template>
-<style lang="scss" scoped src="./App.scss"></style>
+<style lang="scss" src="./App.scss"></style>
 <script lang="ts" src="./App.ts"></script>
