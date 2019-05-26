@@ -4,6 +4,7 @@ import axios from 'axios';
 import ApiConfig from '@/ApiConfig.ts';
 import router from '@/router';
 import { userService } from '@/services/UserService.ts';
+import { tokenService } from '@/services/TokenService.ts';
 import User from '@/classes/user';
 import { sha256 } from 'js-sha256';
 
@@ -52,7 +53,12 @@ export default class Conversation extends Vue {
                 return;
             }
 
-            userService.currentUser = response.data.user;
+            const authenticatedUser = tokenService.authenticate(response.data.jwt);
+            if (!authenticatedUser) {
+                return;
+            }
+
+            userService.currentUser = authenticatedUser;
             router.go(-1);
         });
     }

@@ -3,9 +3,14 @@ from firebase_admin import credentials, db
 import json
 import time
 from operator import attrgetter
+import jwt
+import os
+import datetime
 
 users_db = None
 messages_db = None
+
+SECRET_KEY = "secret"
 
 def init():
     global users_db
@@ -35,6 +40,10 @@ def add_message(message):
 # Returns a user with this ID
 def get_user(id):
     user = users_db.child(id).get()
+
+    if not user:
+        return json.dumps({})
+
     user["id"] = id
     return json.dumps(user)
 
@@ -98,6 +107,20 @@ def login(body):
 
     if (user["password"] != body["password"]):
         return json.dumps({"valid": False, "error": "Wrong password."})
+
+    payload = {
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+        "iat": datetime.datetime.utcnow(),
+        "sub": user["id"],
+        "user": user
+    }
+
+    jwtoken = jwt.encode(
+        payload,
+        SECRET_KEY,
+        algorithm="HS256"
+    )
+
+    return json.dumps({"valid": True, "jwt": jwtoken.decode("utf-8")})
     
-    return json.dumps({"valid": True, "user": user})
     

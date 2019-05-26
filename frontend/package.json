@@ -9,8 +9,10 @@
     "run": "npm run-script build && cd .. && python app.py"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^8.3.2",
     "axios": "^0.18.0",
     "js-sha256": "^0.9.0",
+    "jsonwebtoken": "^8.5.1",
     "socket.io-client": "^2.2.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",

@@ -16,5 +16,5 @@ Vue.use(Vuetify, {
     warning: colors.orange.base,
     info: colors.blue.base,
     success: colors.lightGreen.base,
-  }
+  },
 });
