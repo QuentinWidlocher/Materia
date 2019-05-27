@@ -2,7 +2,9 @@
   <v-app :dark="globalVariables.darkMode">
     <v-content>
       <transition :name="transitionName">
-        <router-view/>
+        <keep-alive>
+          <router-view/>
+        </keep-alive>
       </transition>
     </v-content>
   </v-app>

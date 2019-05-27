@@ -64,10 +64,16 @@ html {
 
   &-leave {
     transform: translateX(0);
+    width: 100vw;
+    position: absolute;
+    z-index: 2;
   }
 
   &-leave-to {
     transform: translateX(100vw);
+    width: 100vw;
+    position: absolute;
+    z-index: 2;
   }
 
   &-enter-active,
@@ -78,7 +84,6 @@ html {
 
   &-enter,
   &-enter-to {
-    position: absolute;
     width: 100vw;
     top:0;
     left: 0;
@@ -89,15 +94,14 @@ html {
       width: 100vw;
       height: 100vh;
       position: absolute;
-      z-index: -1;
     }
   }
 
   &-enter::before{
-    opacity: 0;
+    opacity: 0.3;
   }
 
   &-enter-to::before {
-    opacity: 0.3;
+    opacity: 0;
   }
 }

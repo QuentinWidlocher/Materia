@@ -25,10 +25,10 @@ export default class Contacts extends Vue {
     private contacts: ContactRow[] = [];
     private contactsLoading: boolean = true;
 
-    private created() {
-
-        // We load all the contacts and display them
-        // TODO: Load only users contacts
+    // We load all the contacts and display them
+    // The view is kept alive, using activated() allow to refresh data when the view is navigated
+    // TODO: Load only users contacts
+    private activated() {
         this.loadContacts().then((contacts: ContactRow[]) => {
             this.contacts = contacts;
             this.contactsLoading = false;

@@ -37,6 +37,10 @@ export default class Conversation extends Vue {
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
 
         this.user = userService.currentUser;
+    }
+
+    private activated() {
+        this.scrollToBottom();
 
         // First we load the interlocutor based on his ID
         this.loadInterlocutor(this.interlocutorId).then((interlocutor) => {
@@ -106,7 +110,9 @@ export default class Conversation extends Vue {
 
     private scrollToBottom() {
         const container: Element = (this.$refs.messages as Element);
-        container.scrollTop = container.scrollHeight;
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
     }
 
     // We the websocket gives us a message, we add it to the message list
