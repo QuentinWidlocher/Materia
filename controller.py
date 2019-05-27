@@ -1,3 +1,4 @@
+import collections
 import firebase_admin
 from firebase_admin import credentials, db
 import json
@@ -6,11 +7,31 @@ from operator import attrgetter
 import os
 import datetime
 from flask_jwt_extended import create_access_token
+import asyncio
 
 users_db = None
 messages_db = None
 
 SECRET_KEY = "secret"
+
+
+def get_elapsed_time(f):
+    def wrap(*args):
+        time1 = time.time()
+        ret = f(*args)
+        time2 = time.time()
+        print('{:s} function took {:.3f} ms'.format(
+            f.__name__, (time2-time1)*1000.0))
+
+        return ret
+    return wrap
+
+
+def async_no_wait(f):
+    def wrapped(*args, **kwargs):
+        return asyncio.get_event_loop().run_in_executor(None, f, *args, *kwargs)
+
+    return wrapped
 
 def init():
     global users_db
@@ -27,6 +48,7 @@ def init():
     messages_db = db.reference('messages')
 
 # Adds a message in the db
+@get_elapsed_time
 def add_message(message):
     # We create a composite key, made by the from → to
     message['direction'] = message['from'] + '|' + message['to']
@@ -35,7 +57,36 @@ def add_message(message):
     message['dateSent'] = time.time()
 
     # We add the message
-    messages_db.push().set(message)
+    added_message = messages_db.push()
+    added_message.set(message)
+
+    message['id'] = added_message.key
+
+    update_last_message(message)
+
+@async_no_wait
+def update_last_message(message):
+    
+    i = 0
+    while i < 2:
+        userId = message['from'] if i == 0 else message['to']
+        interlocutorId = message['to'] if i == 0 else message['from']
+
+        # print('Tour de boucle n°' + str(i+1) + ', msg de ' + userId + ' à ' + interlocutorId)
+
+        user = users_db.child(userId).get()
+
+        if not hasattr(user, 'lastMessages'):
+            user['lastMessages'] = {}
+
+        if not hasattr(user['lastMessages'], interlocutorId):
+            user['lastMessages'][interlocutorId] = {}
+
+        user['lastMessages'][interlocutorId] = message
+
+        users_db.child(userId).update(user)
+
+        i += 1
 
 # Returns a user with this ID
 def get_user(id):

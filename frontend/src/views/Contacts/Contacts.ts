@@ -9,7 +9,7 @@ import router from '@/router';
 
 class ContactRow {
     public user: User;
-    public lastMessage: Message;
+    public lastMessage: Message | null;
 }
 
 @Component({
@@ -36,36 +36,25 @@ export default class Contacts extends Vue {
     }
 
     private loadContacts(): Promise<ContactRow[]> {
-        const contacts: ContactRow[] = [];
-
         return Axios.get(ApiConfig.userBase).then((usersResponse) => {
             const users = usersResponse.data as User[];
+            const contacts: ContactRow[] = [];
 
-            const promises: Array<Promise<void>> = [];
-
-            // We get the last message sent in the conversation between the user and all others
             users.forEach((user: User) => {
 
-                if (user.id === this.userService.currentUser.id) {
+                if (user.id === userService.currentUser.id) {
                     return;
                 }
 
-                promises.push(new Promise((rslv) => {
-                    const newContact: ContactRow = new ContactRow();
-                    newContact.user = user;
+                user.lastMessages = user.lastMessages ? user.lastMessages : [];
+                const contact: ContactRow = new ContactRow();
+                contact.user = user;
+                contact.lastMessage = user.lastMessages[userService.currentUser.id as any] ? user.lastMessages[userService.currentUser.id as any] : null;
 
-                    Axios.get(ApiConfig.messageLast.replace(':idFrom', user.id).replace(':idTo', this.userService.currentUser.id)).then((messageResponse) => {
-                        newContact.lastMessage = messageResponse.data;
-                    }).finally(() => {
-                        contacts.push(newContact);
-                        rslv();
-                    });
-                }));
+                contacts.push(contact);
             });
 
-            return Promise.all(promises);
-        }).then(() => {
-            return contacts.sort((a: ContactRow, b: ContactRow) => a.lastMessage.dateSent - b.lastMessage.dateSent);
+            return contacts;
         });
     }
 

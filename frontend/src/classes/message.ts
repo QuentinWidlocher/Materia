@@ -1,4 +1,9 @@
 export default class Message {
+
+    public static newEmpty(): Message {
+        return new Message('', '', '');
+    }
+
     public from: string;
     public to: string;
     public direction: string;

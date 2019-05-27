@@ -16,8 +16,8 @@
           <v-list-tile v-for="contact in contacts" v-bind:key="contact.user.id" @click="gotoConversation(contact.user.id)">
             <v-list-tile-content>
               <v-list-tile-title>{{ contact.user.username }}</v-list-tile-title>
-              <v-list-tile-sub-title>
-                <b v-if="contact.lastMessage.from == userService.currentUser.id">You : </b>
+              <v-list-tile-sub-title v-if="contact.lastMessage">
+                <b v-if="contact.lastMessage.from == userService.currentUser.id">You : </b>
                 {{ contact.lastMessage.body }}
                 <span v-if="contact.lastMessage.dateSent" class="time">
                   {{ new Date(contact.lastMessage.dateSent * 1000) | moment("kk:mm") }}</span>
