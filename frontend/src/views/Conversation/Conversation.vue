@@ -1,7 +1,7 @@
 <template>
   <div id="Conversation">
     <Toolbar :title="title" :button="{ action: 'back' }"></Toolbar>
-    <v-container fluid class="pt-0">
+    <v-container fluid class="background pt-0">
         <div class="page">
 
         <v-progress-circular 

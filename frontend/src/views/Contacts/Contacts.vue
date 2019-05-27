@@ -1,5 +1,5 @@
 <template>
-  <div id="Contacts">
+  <div id="Contacts" class="background">
     <Toolbar :title="title" :button="{ action: 'sidenav' }"></Toolbar>
 
     <div class="page" v-if="contactsLoading">

@@ -9,6 +9,15 @@ html {
   }
 }
 
+.background {
+  .theme--light & {
+    background-color: #fafafa;
+  }
+  .theme--dark & {
+    background-color: #303030;
+  }
+}
+
 .v-content {
     height: calc(100vh - 4rem);
     overflow-y: hidden;
@@ -39,7 +48,6 @@ html {
       width: 100vw;
       height: 100vh;
       position: absolute;
-      z-index: 2;
     }
   }
 
@@ -73,6 +81,7 @@ html {
     position: absolute;
     width: 100vw;
     top:0;
+    left: 0;
 
     &::before {
       content: '';
@@ -80,6 +89,7 @@ html {
       width: 100vw;
       height: 100vh;
       position: absolute;
+      z-index: -1;
     }
   }
 
