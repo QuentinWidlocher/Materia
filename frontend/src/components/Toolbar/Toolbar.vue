@@ -8,7 +8,7 @@
         <v-toolbar-title>{{ title | capitalize }}</v-toolbar-title>
         <v-spacer></v-spacer>
     </v-toolbar>
-    <Sidenav :display="showSidenav"/>
+    <Sidenav v-model="showSidenav"/>
 </div>
 </template>
 <!-- <style lang="scss" scoped src="./Toolbar.scss"></style> -->

@@ -1,4 +1,4 @@
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import Message from '../../classes/message';
 import { userService } from '@/services/UserService';
 import { globalVariableService } from '@/services/GlobalVariableService';
@@ -7,7 +7,8 @@ import { tokenService } from '@/services/TokenService';
 
 @Component
 export default class Talkbubble extends Vue {
-    @Prop() private display: boolean;
+    @Prop() private value: boolean;
+    private show: boolean = false;
 
     private content: Array<{
         icon: string;
@@ -15,9 +16,20 @@ export default class Talkbubble extends Vue {
         action: () => void;
     }>;
 
+    // We show immediatly the navbar when called
+    // but we wait before it's offscreen to hide it
+    @Watch('value')
+    private onDisplay() {
+        if (this.show) {
+            setTimeout(() => this.show = false, 200);
+        } else {
+            this.show = true;
+        }
+    }
+
     private created() {
         this.content = [
-            { icon: 'brightness_high', name: 'Toggle dark mode', action: () => this.toggleDarkMode(0) },
+            { icon: 'brightness_3', name: 'Dark mode', action: () => this.toggleDarkMode(0) },
             { icon: 'exit_to_app', name: 'Log out', action: () => this.logout()},
         ];
     }
@@ -27,6 +39,7 @@ export default class Talkbubble extends Vue {
         this.content[index].icon = globalVariableService.darkMode ? 'brightness_high' : 'brightness_3';
         this.content[index].name = globalVariableService.darkMode ? 'Light mode' : 'Dark mode';
 
+        // We need to update the app for the theme to take effect
         this.$forceUpdate();
         globalVariableService.eventHub.$emit('update');
     }
@@ -35,4 +48,5 @@ export default class Talkbubble extends Vue {
         tokenService.deauthenticate();
         router.push('login');
     }
+
 }

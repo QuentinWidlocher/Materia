@@ -1,10 +1,17 @@
 <template>
     <v-navigation-drawer
-      v-model="display"
-      v-show="display"
+      v-bind:value="value"
+      v-on:input="$emit('input', $event)"
+      v-show="show"
       absolute
       temporary
     >
+    <v-img :aspect-ratio="16/9" src="./logo.png"/>
+    <v-toolbar flat>
+      <span class="title">
+        Materia
+      </span>
+    </v-toolbar>
       <v-list>
         <v-list-tile v-for="row in content" :key="row.name" @click="row.action">
             <v-list-tile-action>

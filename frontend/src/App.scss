@@ -27,14 +27,20 @@ html {
 
   &-enter {
     transform: translateX(100vw);
+    width: 100vw;
+    position: absolute;
+    z-index: 2;
   }
   &-enter-to {
     transform: translateX(0);
+    width: 100vw;
+    position: absolute;
+    z-index: 2;
   }
 
   // The animation
   &-enter-active, &-leave-active, &-leave-active::before {
-    transition: all .5s cubic-bezier(.4, 0, .2, 1);
+    transition: all .4s cubic-bezier(.4, 0, .2, 1);
   }
 
   // What doesn't change
@@ -48,6 +54,7 @@ html {
       width: 100vw;
       height: 100vh;
       position: absolute;
+      z-index: 1;
     }
   }
 
@@ -79,7 +86,7 @@ html {
   &-enter-active,
   &-enter-active::before,
   &-leave-active {
-    transition: all .5s cubic-bezier(.4, 0, .2, 1);
+    transition: all .4s cubic-bezier(0.8, 0, 0.6, 1);
   }
 
   &-enter,
@@ -94,6 +101,7 @@ html {
       width: 100vw;
       height: 100vh;
       position: absolute;
+      z-index: 1;
     }
   }
 

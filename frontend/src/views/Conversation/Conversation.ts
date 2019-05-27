@@ -41,6 +41,7 @@ export default class Conversation extends Vue {
 
     private activated() {
         this.scrollToBottom();
+        this.messagesLoading = true;
 
         // First we load the interlocutor based on his ID
         this.loadInterlocutor(this.interlocutorId).then((interlocutor) => {

@@ -54,7 +54,14 @@ export default class Contacts extends Vue {
                 contacts.push(contact);
             });
 
-            return contacts;
+            // We sort the contacts by last message up
+            return contacts.sort((a: ContactRow, b: ContactRow) => {
+                if (!a.lastMessage || !b.lastMessage) {
+                    return 0;
+                }
+
+                return a.lastMessage.dateSent - b.lastMessage.dateSent;
+            }).reverse();
         });
     }
 
