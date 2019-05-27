@@ -1,8 +1,10 @@
-import { verify, decode } from 'jsonwebtoken';
+import { verify } from 'jsonwebtoken';
 import User from '@/classes/user';
+import Axios from 'axios';
 
 export class TokenService {
     private secret: string = 'N0uQzxIYpPPjtR9zS6nDtc5OqnjRu5xruzJLXcRBiORHgksfp5bIaPRbgtivEprj';
+    private _token: string;
 
     public authenticate(jwt: string = ''): User | null {
         let decodedJwt: any;
@@ -16,7 +18,7 @@ export class TokenService {
             }
         }
 
-        decodedJwt = verify(jwt, this.secret, { algorithms: ['HS256']}, (err: any, decoded: any) => {
+        decodedJwt = verify(jwt, this.secret, { algorithms: ['HS256'] }, (err: any, decoded: any) => {
             if (err) {
                 console.error(err);
             }
@@ -24,7 +26,7 @@ export class TokenService {
             return decoded;
         }) as any;
 
-        localStorage.setItem('jwt', jwt);
+        this.token = jwt;
         return (decodedJwt ? decodedJwt.identity as User : null);
     }
 
@@ -33,7 +35,17 @@ export class TokenService {
     }
 
     public get token(): string | null {
-        return localStorage.getItem('jwt');
+        return this._token || localStorage.getItem('jwt');
+    }
+
+    public set token(token: string | null) {
+        if (token) {
+            localStorage.setItem('jwt', token);
+            this._token = token;
+
+            // Add the token in the header of each call
+            Axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        }
     }
 }
 

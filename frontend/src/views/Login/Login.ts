@@ -1,6 +1,6 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Toolbar from '@/components/Toolbar/Toolbar';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import ApiConfig from '@/ApiConfig.ts';
 import router from '@/router';
 import { userService } from '@/services/UserService.ts';
@@ -45,7 +45,7 @@ export default class Conversation extends Vue {
         axios.post(ApiConfig.userLogin, {
             username: this.username,
             password: sha256(this.password),
-        }).then((response) => {
+        }).then((response: AxiosResponse) => {
 
             if (!response.data.valid) {
                 this.error = response.data.error;
@@ -53,13 +53,15 @@ export default class Conversation extends Vue {
                 return;
             }
 
-            const authenticatedUser = tokenService.authenticate(response.data.jwt);
+            const authenticatedUser: User | null = tokenService.authenticate(response.data.jwt)
+
             if (!authenticatedUser) {
                 return;
             }
-
             userService.currentUser = authenticatedUser;
+
             router.go(-1);
+
         });
     }
 

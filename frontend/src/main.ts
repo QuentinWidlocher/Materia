@@ -10,9 +10,6 @@ import { tokenService } from './services/TokenService';
 
 Vue.use(require('vue-moment'));
 
-// Add the token in the header of each call
-Axios.defaults.headers.common.Authorization = `Bearer ${tokenService.token}`;
-
 Vue.config.productionTip = false;
 
 new Vue({

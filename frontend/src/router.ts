@@ -5,6 +5,8 @@ import Login from '@/views/Login/Login.vue';
 import Contacts from './views/Contacts/Contacts';
 import { userService } from '@/services/UserService';
 import { tokenService } from './services/TokenService';
+import { FORMERR } from 'dns';
+import User from './classes/user';
 
 Vue.use(Router);
 
@@ -20,7 +22,7 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const authenticatedUser = tokenService.authenticate();
+  const authenticatedUser: User | null = tokenService.authenticate();
 
   // If the user is not authenticated or if the token is expired, move him to the login page
   if (to.name !== 'login' && !userService.currentUser && !authenticatedUser) {
@@ -30,7 +32,9 @@ router.beforeEach((to, from, next) => {
   if (authenticatedUser) {
     userService.currentUser = authenticatedUser;
   }
+
   next();
+
 });
 
 export default router;
