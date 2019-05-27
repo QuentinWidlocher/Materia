@@ -3,6 +3,7 @@ import Message from '../../classes/message';
 import { userService } from '@/services/UserService';
 import { globalVariableService } from '@/services/GlobalVariableService';
 import router from '@/router';
+import { tokenService } from '@/services/TokenService';
 
 @Component
 export default class Talkbubble extends Vue {
@@ -31,6 +32,7 @@ export default class Talkbubble extends Vue {
     }
 
     private logout() {
+        tokenService.deauthenticate();
         router.push('login');
     }
 }

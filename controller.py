@@ -3,9 +3,9 @@ from firebase_admin import credentials, db
 import json
 import time
 from operator import attrgetter
-import jwt
 import os
 import datetime
+from flask_jwt_extended import create_access_token
 
 users_db = None
 messages_db = None
@@ -108,19 +108,8 @@ def login(body):
     if (user["password"] != body["password"]):
         return json.dumps({"valid": False, "error": "Wrong password."})
 
-    payload = {
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
-        "iat": datetime.datetime.utcnow(),
-        "sub": user["id"],
-        "user": user
-    }
+    jwtoken = create_access_token(identity=user)
 
-    jwtoken = jwt.encode(
-        payload,
-        SECRET_KEY,
-        algorithm="HS256"
-    )
-
-    return json.dumps({"valid": True, "jwt": jwtoken.decode("utf-8")})
+    return json.dumps({"valid": True, "jwt": jwtoken})
     
     

@@ -22,8 +22,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const authenticatedUser = tokenService.authenticate();
 
-  // If the user is not authenticated, move him to the login page
-  // TODO: Use token authentication
+  // If the user is not authenticated or if the token is expired, move him to the login page
   if (to.name !== 'login' && !userService.currentUser && !authenticatedUser) {
     next({name: 'login'});
   }
