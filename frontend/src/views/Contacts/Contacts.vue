@@ -13,6 +13,7 @@
     </div>
 
       <v-list two-line>
+        <transition-group name="flip-list">
           <v-list-tile v-for="contact in contacts" v-bind:key="contact.user.id" @click="gotoConversation(contact.user.id)">
             <v-list-tile-content>
               <v-list-tile-title>{{ contact.user.username }}</v-list-tile-title>
@@ -24,6 +25,7 @@
                 </v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
+        </transition-group>
       </v-list>
   </div>
 </template>

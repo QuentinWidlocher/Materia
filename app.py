@@ -16,7 +16,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Change this!
 app.config['JWT_SECRET_KEY'] = 'N0uQzxIYpPPjtR9zS6nDtc5OqnjRu5xruzJLXcRBiORHgksfp5bIaPRbgtivEprj'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=(60*60*8))
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=(60*60*8)) # 8h
 jwt = JWTManager(app)
 
 socketio = SocketIO(app)

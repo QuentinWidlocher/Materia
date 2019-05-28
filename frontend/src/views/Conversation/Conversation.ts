@@ -8,6 +8,7 @@ import User from '@/classes/user';
 import ApiConfig from '@/ApiConfig.ts';
 import { userService } from '@/services/UserService.ts';
 import router from '@/router';
+import { globalVariableService } from '@/services/GlobalVariableService';
 
 @Component({
     components: {
@@ -121,7 +122,8 @@ export default class Conversation extends Vue {
 
         // For now, we just ignore if the message doesn't concern us
         // TODO: Use rooms to send messages to concerned people only
-        if (message.from !== userService.currentUser.id && message.from !== this.interlocutor.id) {
+        if ((message.from !== userService.currentUser.id && message.from !== this.interlocutor.id)
+            && (message.to !== userService.currentUser.id && message.to !== this.interlocutor.id)) {
             return;
         }
 
@@ -156,6 +158,12 @@ export default class Conversation extends Vue {
         // We emit the message and when we get the response from the server, we update the message state
         SocketInstance.emit('message', messageToSend.toJSON(), () => {
             this.messages[messagePushedIndex].sent = true;
+
+            // If we sent the message, we need to update the last message in the contact list
+            // because we won't get it by socket io
+            if (messageToSend.from === userService.currentUser.id) {
+                globalVariableService.eventHub.$emit('sentMessage', messageToSend);
+            }
         });
 
         // We clear the text field

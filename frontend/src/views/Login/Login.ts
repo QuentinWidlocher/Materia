@@ -13,7 +13,7 @@ import { sha256 } from 'js-sha256';
         Toolbar,
     },
 })
-export default class Conversation extends Vue {
+export default class Login extends Vue {
 
     private title: string = 'Login';
 
