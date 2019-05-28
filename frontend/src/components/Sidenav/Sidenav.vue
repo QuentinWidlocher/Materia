@@ -6,7 +6,7 @@
       absolute
       temporary
     >
-    <v-img :aspect-ratio="16/9" src="./logo.png"/>
+    <v-img :aspect-ratio="16/9" src="./static/img/logo.webp"/>
     <v-toolbar flat>
       <span class="title">
         Materia
