@@ -1,7 +1,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Talkbubble from '@/components/Talkbubble/Talkbubble.vue';
 import Message from '@/classes/message';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { SocketInstance } from '@/plugins/socketio.ts';
 import Toolbar from '@/components/Toolbar/Toolbar.vue';
 import User from '@/classes/user';
@@ -77,34 +77,13 @@ export default class Conversation extends Vue {
     }
 
     private loadMessages(interlocutor: User, user: User): Promise<Message[]> {
-        let messagesLeft: Message[];
-        let messagesRight: Message[];
-        let messagesFinal: Message[];
 
         return new Promise((rslv) => {
 
             // We fetch the messages in the interlocutor -> user direction
-            axios.get(ApiConfig.messageDirection.replace(':idFrom', interlocutor.id).replace(':idTo', user.id)).then((messages) => {
-
-                // Firebase returns an object with messages as properties of this object
-                // Here we transform the objet in an array of messages
-                messagesLeft = messages.data as Message[];
-
-                // We fetch the messages in the user -> interlocutor direction
-                return axios.get(ApiConfig.messageDirection.replace(':idFrom', user.id).replace(':idTo', interlocutor.id));
-
-            }).then((messages) => {
-
-                messagesRight = messages.data as Message[];
-
-            }).then(() => {
-
-                // We merge the two arrays, then sort the final array by the timestamps
-                messagesFinal = messagesLeft.concat(messagesRight);
-                messagesFinal = messagesFinal.sort((a: Message, b: Message) => (a.dateSent > b.dateSent) ? 1 : ((b.dateSent > a.dateSent) ? -1 : 0));
-
-                rslv(messagesFinal);
-
+            return axios.get(ApiConfig.messageDirection.replace(':idFrom', interlocutor.id).replace(':idTo', user.id))
+            .then((response: AxiosResponse) => {
+                rslv(response.data as Message[]);
             });
 
         });

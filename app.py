@@ -2,7 +2,8 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager, jwt_required
-import controller as ctrl
+from controllers import controller as ctrl
+import routes
 import datetime
 
 app = Flask(__name__, 
@@ -28,43 +29,51 @@ json = {"content-type": "application/json"}
 ##
 
 # Get all users
-@app.route('/api/users/', methods=['GET'])
-@app.route('/api/users', methods=['GET'])
+@app.route(routes.user_base + "/", methods=['GET'])
+@app.route(routes.user_base      , methods=['GET'])
 @cross_origin()
 @jwt_required
 def get_all_users():
     return ctrl.get_all_users(), json
 
 # Get a user
-@app.route('/api/users/<id>/', methods=['GET'])
-@app.route('/api/users/<id>', methods=['GET'])
+@app.route(routes.user_unique + "/", methods=['GET'])
+@app.route(routes.user_unique      , methods=['GET'])
 @cross_origin()
 @jwt_required
 def get_user(id):
     return ctrl.get_user(id), json
 
+# Update a user
+@app.route(routes.user_unique + "/", methods=['PUT'])
+@app.route(routes.user_unique      , methods=['PUT'])
+@cross_origin()
+@jwt_required
+def update_user(id):
+    return ctrl.update_user(id, request.get_json()), json
+
 # Try to login
-@app.route('/api/users/login/', methods=['POST'])
-@app.route('/api/users/login', methods=['POST'])
+@app.route(routes.user_login + "/", methods=['POST'])
+@app.route(routes.user_login      , methods=['POST'])
 @cross_origin()
 def login():
     return ctrl.login(request.get_json()), json
 
-# Get the first message of a conversation
-@app.route('/api/messages/<id_from>/<id_to>/last/', methods=['GET'])
-@app.route('/api/messages/<id_from>/<id_to>/last', methods=['GET'])
+# Get the last message of a conversation
+@app.route(routes.message_last + "/", methods=['GET'])
+@app.route(routes.message_last      , methods=['GET'])
 @cross_origin()
 @jwt_required
 def get_last_message(id_from, id_to):
     return ctrl.get_last_message(id_from, id_to), json
     
 # Get all messages FROM id_from TO id_to
-@app.route('/api/messages/<id_from>/<id_to>/', methods=['GET'])
-@app.route('/api/messages/<id_from>/<id_to>', methods=['GET'])
+@app.route(routes.message_direction + "/", methods=['GET'])
+@app.route(routes.message_direction      , methods=['GET'])
 @cross_origin()
 @jwt_required
 def get_messages(id_from, id_to):
-    return ctrl.get_messages(id_from, id_to), json
+    return ctrl.get_discussion(id_from, id_to), json
 
 
 
