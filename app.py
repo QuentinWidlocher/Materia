@@ -49,8 +49,8 @@ def get_user(id):
 @app.route(routes.user_unique      , methods=['PUT'])
 @cross_origin()
 @jwt_required
-def update_user(id):
-    return ctrl.update_user(id, request.get_json()), json
+def edit_user(id):
+    return ctrl.edit_user(id, request.get_json()), json
 
 # Try to login
 @app.route(routes.user_login + "/", methods=['POST'])

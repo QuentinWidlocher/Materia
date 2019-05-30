@@ -20,9 +20,17 @@ def get_user(db, id):
 
     user["id"] = id
 
+    # contacts_items = list(user["contacts"].items())
+
+    # for key, value in users_items:
+    #     user["contacts"][users.index(value)] = key
+
     print(f"GET USER {id}")
 
     return user
+
+def edit_user(db, id, body):
+    return db['users'].child(id).update(body)
 
 def login(db, body):
     user = db['users'].order_by_child("username").equal_to(body["username"]).get()

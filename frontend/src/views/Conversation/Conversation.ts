@@ -36,11 +36,12 @@ export default class Conversation extends Vue {
     private mounted() {
         // We bind the message receiving to a function
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
-
-        this.user = userService.currentUser;
     }
 
     private activated() {
+        this.user = userService.currentUser;
+        console.log(this.user);
+
         this.scrollToBottom();
         this.messagesLoading = true;
 
@@ -71,6 +72,7 @@ export default class Conversation extends Vue {
     private loadInterlocutor(id: string): Promise<User> {
         return new Promise((rslv) => {
             axios.get(ApiConfig.userUnique.replace(':id', id)).then((interlocutor) => {
+                console.log(interlocutor.data);
                 rslv(interlocutor.data as User);
             });
         });

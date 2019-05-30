@@ -53,7 +53,7 @@ export default class Login extends Vue {
                 return;
             }
 
-            const authenticatedUser: User | null = tokenService.authenticate(response.data.jwt)
+            const authenticatedUser: User | null = tokenService.authenticate(response.data.jwt);
 
             if (!authenticatedUser) {
                 return;

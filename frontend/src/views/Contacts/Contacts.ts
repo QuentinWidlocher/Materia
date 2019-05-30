@@ -8,11 +8,8 @@ import { userService, UserService } from '@/services/UserService';
 import router from '@/router';
 import { SocketInstance } from '@/plugins/socketio';
 import { globalVariableService } from '@/services/GlobalVariableService';
+import { ContactRow } from '@/classes/contactRow';
 
-class ContactRow {
-    public user: User;
-    public lastMessage: Message | null;
-}
 
 @Component({
     components: {
@@ -34,6 +31,10 @@ export default class Contacts extends Vue {
         // We also listen to the event that trigger when WE send a message
         // because socket io won't fire
         globalVariableService.eventHub.$on('sentMessage', (message: Message) => this.receiveMessage(message));
+
+        this.contacts = userService.currentUser.contacts;
+
+        return;
 
         // We load all the contacts and display them
         // The view is kept alive, so the data are updated by the socket

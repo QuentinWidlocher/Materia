@@ -1,4 +1,5 @@
 import Message from './message';
+import { ContactRow } from './contactRow';
 
 export default class User {
 
@@ -9,13 +10,13 @@ export default class User {
     public id: string;
     public username: string;
     public password: string;
-    public lastMessages: Message[];
+    public contacts: ContactRow[];
 
-    constructor(id: string, username: string, password: string, lastMessages: Message[]) {
+    constructor(id: string, username: string, password: string, contacts: ContactRow[]) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.lastMessages = lastMessages;
+        this.contacts = contacts;
     }
 
     public toJSON(): object {

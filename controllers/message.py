@@ -1,4 +1,5 @@
 from helpers import async_no_wait
+from controllers import user as user_ctrl
 import time
 
 def get_messages(db, id_from, id_to):
@@ -66,34 +67,43 @@ def add_message(db, message):
 
     message['id'] = added_message.key
 
-    print(f"ADD MESSAGE {add_message.key}")
+    print(f"ADD MESSAGE {added_message.key}")
 
-    update_last_message(message)
+    update_last_message(db, message)
 
-    return {"ok"}
+    return {}
 
 
-@async_no_wait
+# @async_no_wait
 def update_last_message(db, message):
+
+    user_base = user_ctrl.get_user(db, message["from"])
+    del user_base["id"]
+    del user_base["contacts"]
+
+    interlocutor_base = user_ctrl.get_user(db, message["to"])
+    del interlocutor_base["id"]
+    del interlocutor_base["contacts"]
     
     i = 0
     while i < 2:
-        userId = message['from'] if i == 0 else message['to']
-        interlocutorId = message['to'] if i == 0 else message['from']
+        print(user_base, interlocutor_base)
+        user = user_base if i == 0 else interlocutor_base
+        interlocutor = interlocutor_base if i == 0 else user_base
 
-        # print('Tour de boucle n°' + str(i+1) + ', msg de ' + userId + ' à ' + interlocutorId)
+        if not hasattr(user, "contacts"):
+            user["contacts"] = {}
 
-        user = users_db.child(userId).get()
+        if not hasattr(user["contacts"], interlocutor["id"]):
+            user["contacts"][interlocutor["id"]] = {}
 
-        if not hasattr(user, 'lastMessages'):
-            user['lastMessages'] = {}
+        if not hasattr(user["contacts"][interlocutor["id"]], "lastMessage"):
+            user["contacts"][interlocutor["id"]]["lastMessage"] = {}
 
-        if not hasattr(user['lastMessages'], interlocutorId):
-            user['lastMessages'][interlocutorId] = {}
+        user["contacts"][interlocutor["id"]]["lastMessage"] = message
+        user["contacts"][interlocutor["id"]]["user"] = interlocutor
 
-        user['lastMessages'][interlocutorId] = message
-
-        users_db.child(userId).update(user)
+        user_ctrl.edit_user(db, userId, user)
 
         print(f"UPDATE USER {userId} LAST MESSAGE")
 
