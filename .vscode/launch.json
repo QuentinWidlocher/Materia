@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [{
+        "name": "Launch Materia",
+        "type": "firefox",
+        "request": "launch",
+        "reAttach": true,
+        "url": "http://127.0.0.1:8080/",
+        "webRoot": "${workspaceFolder}"
+    }]
+}

@@ -1,4 +1,5 @@
 from flask_jwt_extended import create_access_token
+import json
 
 def get_all_users(db):
     users_odict = db['users'].order_by_child("username").start_at("0").get()
@@ -20,10 +21,8 @@ def get_user(db, id):
 
     user["id"] = id
 
-    # contacts_items = list(user["contacts"].items())
-
-    # for key, value in users_items:
-    #     user["contacts"][users.index(value)] = key
+    if not "contacts" in user:
+        user["contacts"] = []
 
     print(f"GET USER {id}")
 
@@ -35,18 +34,18 @@ def edit_user(db, id, body):
 def login(db, body):
     user = db['users'].order_by_child("username").equal_to(body["username"]).get()
 
-    if (not user):
+    if not user:
         return {"valid": False, "error": "Username not found"}
 
-    user_id = list(user.keys())[0]
-    user = list(user.values())[0]
-    user["id"] = user_id
+    user = get_user(db, list(user.keys())[0])
+
+    print(json.dumps(user))
 
     if (user["password"] != body["password"]):
         return {"valid": False, "error": "Wrong password."}
 
     jwtoken = create_access_token(identity=user)
 
-    print(f"LOG USER {user_id}")
+    print(f"LOG USER {user['id']}")
 
     return {"valid": True, "jwt": jwtoken}

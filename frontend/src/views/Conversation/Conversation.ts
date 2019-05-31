@@ -72,7 +72,6 @@ export default class Conversation extends Vue {
     private loadInterlocutor(id: string): Promise<User> {
         return new Promise((rslv) => {
             axios.get(ApiConfig.userUnique.replace(':id', id)).then((interlocutor) => {
-                console.log(interlocutor.data);
                 rslv(interlocutor.data as User);
             });
         });

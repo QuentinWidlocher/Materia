@@ -1,6 +1,6 @@
 from helpers import async_no_wait
 from controllers import user as user_ctrl
-import time
+import time, json
 
 def get_messages(db, id_from, id_to):
     messages_odict = db['messages'].order_by_child("direction").equal_to(id_from + "|" + id_to).get()
@@ -74,38 +74,44 @@ def add_message(db, message):
     return {}
 
 
-# @async_no_wait
+@async_no_wait
 def update_last_message(db, message):
 
+    # We get our two users with the controller, to have our data already formatted
     user_base = user_ctrl.get_user(db, message["from"])
-    del user_base["id"]
-    del user_base["contacts"]
-
     interlocutor_base = user_ctrl.get_user(db, message["to"])
-    del interlocutor_base["id"]
-    del interlocutor_base["contacts"]
     
     i = 0
     while i < 2:
-        print(user_base, interlocutor_base)
         user = user_base if i == 0 else interlocutor_base
         interlocutor = interlocutor_base if i == 0 else user_base
 
-        if not hasattr(user, "contacts"):
-            user["contacts"] = {}
+        # If the user has no contacts, we instantiate a empty array
+        if not "contacts" in user:
+            user["contacts"] = []
 
-        if not hasattr(user["contacts"], interlocutor["id"]):
-            user["contacts"][interlocutor["id"]] = {}
+        # We try to find the interlocutor in the contact list. If he's not here, we add an space for him
+        var = next((x for x in user["contacts"] if x["user"]["id"] == interlocutor["id"]), None)
+        index = user["contacts"].index(var) if var else -1
+        if index < 0:
+            user["contacts"].append({})
+            index = len(user["contacts"]) -1
 
-        if not hasattr(user["contacts"][interlocutor["id"]], "lastMessage"):
-            user["contacts"][interlocutor["id"]]["lastMessage"] = {}
+        # If the contact has no lastMessage, we instantiate a empty one
+        if not "lastMessage" in user["contacts"][index]:
+            user["contacts"][index]["lastMessage"] = {}
 
-        user["contacts"][interlocutor["id"]]["lastMessage"] = message
-        user["contacts"][interlocutor["id"]]["user"] = interlocutor
+        # We fill the values in the (empty or not) spaces
+        user["contacts"][index]["lastMessage"] = message
+        user["contacts"][index]["user"] = interlocutor
 
-        user_ctrl.edit_user(db, userId, user)
+        # We don't need to add the contacts of a contact of a user when we edit
+        # We need it for the next loop though, so we add a different user than the var
+        tmp = user
+        del tmp["contacts"][index]["user"]["contacts"]
+        user_ctrl.edit_user(db, user["id"], tmp)
 
-        print(f"UPDATE USER {userId} LAST MESSAGE")
+        print(f"UPDATE USER { user['id'] } LAST MESSAGE")
 
         i += 1
 

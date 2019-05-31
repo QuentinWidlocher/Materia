@@ -32,47 +32,16 @@ export default class Contacts extends Vue {
         // because socket io won't fire
         globalVariableService.eventHub.$on('sentMessage', (message: Message) => this.receiveMessage(message));
 
-        this.contacts = userService.currentUser.contacts;
+        // We get the current user contacts and sort them by last message date
+        this.contacts = userService.currentUser.contacts.sort((a: ContactRow, b: ContactRow) => {
+            if (!a.lastMessage || !b.lastMessage) {
+                return 0;
+            }
 
-        return;
+            return a.lastMessage.dateSent - b.lastMessage.dateSent;
+        }).reverse();
 
-        // We load all the contacts and display them
-        // The view is kept alive, so the data are updated by the socket
-        // TODO: Load only users contacts
-        this.loadContacts().then((contacts: ContactRow[]) => {
-            this.contacts = contacts;
-            this.contactsLoading = false;
-        });
-    }
-
-    private loadContacts(): Promise<ContactRow[]> {
-        return Axios.get(ApiConfig.userBase).then((usersResponse) => {
-            const users = usersResponse.data as User[];
-            const contacts: ContactRow[] = [];
-
-            users.forEach((user: User) => {
-
-                if (user.id === userService.currentUser.id) {
-                    return;
-                }
-
-                user.lastMessages = user.lastMessages ? user.lastMessages : [];
-                const contact: ContactRow = new ContactRow();
-                contact.user = user;
-                contact.lastMessage = user.lastMessages[userService.currentUser.id as any] ? user.lastMessages[userService.currentUser.id as any] : null;
-
-                contacts.push(contact);
-            });
-
-            // We sort the contacts by last message up
-            return contacts.sort((a: ContactRow, b: ContactRow) => {
-                if (!a.lastMessage || !b.lastMessage) {
-                    return 0;
-                }
-
-                return a.lastMessage.dateSent - b.lastMessage.dateSent;
-            }).reverse();
-        });
+        this.contactsLoading = false;
     }
 
     private gotoConversation(userId: string) {
@@ -99,7 +68,16 @@ export default class Contacts extends Vue {
 
         const contact = this.contacts.find((c) => c.user.id === interlocutorId);
 
+        // If the contact is not in our list, we refresh the user completely because we lack
+        // data to add it otherwise
         if (!contact) {
+            this.contactsLoading = false;
+            Axios.get(ApiConfig.userUnique.replace(':id', userService.currentUser.id)).then((response) => {
+                console.log(response.data);
+                this.userService.currentUser = response.data;
+                this.contacts = this.userService.currentUser.contacts;
+                this.contactsLoading = false;
+            });
             return;
         }
 
