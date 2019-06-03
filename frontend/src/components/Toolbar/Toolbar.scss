@@ -1,3 +1,8 @@
 #Toolbar {
     z-index: 0;
+
+    .main-toolbar {
+        z-index: 1;
+    }
+
 }

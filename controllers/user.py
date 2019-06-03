@@ -39,7 +39,9 @@ def login(db, body):
 
     user = get_user(db, list(user.keys())[0])
 
-    print(json.dumps(user))
+    # We don't need to pass the users in the jwt
+    if "contacts" in user:
+        del user["contacts"]
 
     if (user["password"] != body["password"]):
         return {"valid": False, "error": "Wrong password."}

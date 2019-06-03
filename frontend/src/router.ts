@@ -7,6 +7,8 @@ import { userService } from '@/services/UserService';
 import { tokenService } from './services/TokenService';
 import { FORMERR } from 'dns';
 import User from './classes/user';
+import Axios from 'axios';
+import ApiConfig from './ApiConfig';
 
 Vue.use(Router);
 
@@ -30,10 +32,13 @@ router.beforeEach((to, from, next) => {
   }
 
   if (authenticatedUser) {
-    userService.currentUser = authenticatedUser;
+    Axios.get(ApiConfig.userUnique.replace(':id', authenticatedUser.id)).then((response) => {
+      userService.currentUser = response.data;
+      next();
+    });
+  } else {
+    next();
   }
-
-  next();
 
 });
 

@@ -2,13 +2,14 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import Toolbar from '@/components/Toolbar/Toolbar';
 import User from '@/classes/user';
 import Message from '@/classes/message';
-import Axios from 'axios';
+import Axios, { AxiosResponse } from 'axios';
 import ApiConfig from '@/ApiConfig';
 import { userService, UserService } from '@/services/UserService';
 import router from '@/router';
 import { SocketInstance } from '@/plugins/socketio';
 import { globalVariableService } from '@/services/GlobalVariableService';
 import { ContactRow } from '@/classes/contactRow';
+import { stat } from 'fs';
 
 
 @Component({
@@ -22,7 +23,12 @@ export default class Contacts extends Vue {
     private userService: UserService = userService;
 
     private contacts: ContactRow[] = [];
+    private contactsOriginal: ContactRow[] = this.contacts;
+    private contactsAll: ContactRow[] = [];
     private contactsLoading: boolean = true;
+
+    private searchTerms: string = '';
+    private searchReady: boolean = false;
 
     private mounted() {
         // We bind the message receiving to a function
@@ -40,6 +46,8 @@ export default class Contacts extends Vue {
 
             return a.lastMessage.dateSent - b.lastMessage.dateSent;
         }).reverse();
+
+        this.contactsOriginal = this.contacts;
 
         this.contactsLoading = false;
     }
@@ -73,9 +81,17 @@ export default class Contacts extends Vue {
         if (!contact) {
             this.contactsLoading = false;
             Axios.get(ApiConfig.userUnique.replace(':id', userService.currentUser.id)).then((response) => {
-                console.log(response.data);
                 this.userService.currentUser = response.data;
-                this.contacts = this.userService.currentUser.contacts;
+                this.contacts = this.userService.currentUser.contacts.sort((a: ContactRow, b: ContactRow) => {
+                    if (!a.lastMessage || !b.lastMessage) {
+                        return 0;
+                    }
+
+                    return a.lastMessage.dateSent - b.lastMessage.dateSent;
+                }).reverse();
+
+                this.contactsOriginal = this.contacts;
+
                 this.contactsLoading = false;
             });
             return;
@@ -87,5 +103,42 @@ export default class Contacts extends Vue {
 
         // We put it at the top of the list
         this.contacts.splice(0, 0, this.contacts.splice(index, 1)[0]);
+    }
+
+    private openSearch(state: boolean) {
+        if (state) {
+            this.searchReady = false;
+            this.contactsLoading = true;
+            return Axios.get(ApiConfig.userBase).then((response: AxiosResponse) => {
+                this.contactsAll = [];
+                response.data.forEach((user: User) => {
+                    this.contactsAll.push({
+                        user,
+                        lastMessage: null,
+                    });
+                });
+            }).then(() => {
+                this.search();
+
+                // I don't understand, if we don't wait for at least 0ms, the list blink when done loading...
+                // TODO : Understand why and fix (making this.search() a Promise doesn't work)
+                setTimeout(() => {
+                    this.searchReady = true;
+                    this.contactsLoading = false;
+                }, 0);
+            });
+        } else {
+            this.contacts = this.contactsOriginal;
+        }
+    }
+
+    private search() {
+        if (this.searchTerms) {
+            this.contacts = this.contactsAll.filter((contact) => {
+                return contact.user.username.toLowerCase().includes(this.searchTerms.toLowerCase());
+            });
+        } else {
+            this.contacts = [];
+        }
     }
 }

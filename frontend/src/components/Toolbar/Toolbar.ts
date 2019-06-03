@@ -10,6 +10,11 @@ import router from '@/router';
 export default class Toolbar extends Vue {
     @Prop() private title: string;
     @Prop() private button: { action: string };
+    @Prop() private searchTerms: string;
+    @Prop() private searchButton: boolean;
+    @Prop() private lockSearch: boolean;
+
+    private showSearchBox: boolean = false;
 
     private showSidenav: boolean = false;
 

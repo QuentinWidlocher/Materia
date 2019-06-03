@@ -1,6 +1,14 @@
 <template>
   <div id="Contacts" class="background">
-    <Toolbar :title="title" :button="{ action: 'sidenav' }"></Toolbar>
+    <Toolbar 
+      :title="title"
+      :button="{ action: 'sidenav' }"
+      :lockSearch="!searchReady"
+      searchButton="true"
+      v-model="searchTerms"
+      v-on:search="search()"
+      v-on:open-search="openSearch($event)"
+    ></Toolbar>
 
     <div class="page" v-if="contactsLoading">
       <v-progress-circular 
@@ -11,6 +19,12 @@
         :width="3"
       ></v-progress-circular>
     </div>
+
+    <transition name="fade-transition">
+      <div class="page" v-if="searchReady && contacts.length <= 0">
+        <v-img src="static/illustrations/svg/contact_search.svg" contain max-width="500" class="ma-auto px-5"/>
+      </div>
+    </transition>
 
       <v-list two-line>
         <transition-group name="flip-list">
