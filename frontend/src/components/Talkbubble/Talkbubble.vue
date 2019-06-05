@@ -11,6 +11,7 @@
             <template v-if="align === 'right'">
                 <v-icon v-if="message.sent === false" small color="white">access_time</v-icon>
                 <v-icon v-if="message.sent === undefined || message.sent" small color="white">done</v-icon>
+                <v-icon v-if="(message.sent === undefined || message.sent) && message.seen">done_all</v-icon>
             </template>
         </span>
     </div>

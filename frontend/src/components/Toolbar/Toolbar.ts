@@ -1,6 +1,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import Sidenav from '@/components/Sidenav/Sidenav';
 import router from '@/router';
+import User from '@/classes/user';
 
 @Component({
     components: {
@@ -9,6 +10,7 @@ import router from '@/router';
 })
 export default class Toolbar extends Vue {
     @Prop() private title: string;
+    @Prop() private user: User;
     @Prop() private button: { action: string };
     @Prop() private searchTerms: string;
     @Prop() private searchButton: boolean;

@@ -20,7 +20,7 @@ import { stat } from 'fs';
 export default class Contacts extends Vue {
     private title: string = 'Materia';
 
-    private userService: UserService = userService;
+    private userServiceInstance: UserService = userService;
 
     private contacts: ContactRow[] = [];
     private contactsOriginal: ContactRow[] = this.contacts;
@@ -30,13 +30,26 @@ export default class Contacts extends Vue {
     private searchTerms: string = '';
     private searchReady: boolean = false;
 
+    private darkMode: boolean = globalVariableService.darkMode;
+
     private mounted() {
         // We bind the message receiving to a function
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
 
+        // We bind the activity change to a function
+        SocketInstance.on('activity', (data: any) => this.updateContactActivity(data));
+
+        // When updating the style, we update the darkMode
+        globalVariableService.eventHub.$on('update', () => this.darkMode = globalVariableService.darkMode);
+
         // We also listen to the event that trigger when WE send a message
         // because socket io won't fire
         globalVariableService.eventHub.$on('sentMessage', (message: Message) => this.receiveMessage(message));
+
+        document.removeEventListener('click', () => { userService.checkActive(); });
+        document.removeEventListener('keydown', () => { userService.checkActive(); });
+        document.addEventListener('click', () => { userService.checkActive(); });
+        document.addEventListener('keydown', () => { userService.checkActive(); });
 
         // We get the current user contacts and sort them by last message date
         this.contacts = userService.currentUser.contacts.sort((a: ContactRow, b: ContactRow) => {
@@ -53,6 +66,8 @@ export default class Contacts extends Vue {
     }
 
     private gotoConversation(userId: string) {
+        this.contacts = this.contactsOriginal;
+        this.openSearch(false);
         router.push(`/conversation/${userId}`);
     }
 
@@ -74,15 +89,25 @@ export default class Contacts extends Vue {
             return;
         }
 
-        const contact = this.contacts.find((c) => c.user.id === interlocutorId);
+        console.log(this.contacts);
+        let contact = this.contacts.find((c) => c.user.id === interlocutorId);
+        console.log(contact);
 
         // If the contact is not in our list, we refresh the user completely because we lack
         // data to add it otherwise
         if (!contact) {
-            this.contactsLoading = false;
-            Axios.get(ApiConfig.userUnique.replace(':id', userService.currentUser.id)).then((response) => {
-                this.userService.currentUser = response.data;
-                this.contacts = this.userService.currentUser.contacts.sort((a: ContactRow, b: ContactRow) => {
+            this.contactsLoading = true;
+            Axios.get(ApiConfig.userUnique.replace(':id', interlocutorId)).then((response) => {
+
+                contact = {
+                    user: response.data,
+                    lastMessage: message,
+                };
+
+                userService.currentUser.contacts.push(contact);
+                this.userServiceInstance = userService;
+
+                this.contacts = userService.currentUser.contacts.sort((a: ContactRow, b: ContactRow) => {
                     if (!a.lastMessage || !b.lastMessage) {
                         return 0;
                     }
@@ -103,6 +128,17 @@ export default class Contacts extends Vue {
 
         // We put it at the top of the list
         this.contacts.splice(0, 0, this.contacts.splice(index, 1)[0]);
+    }
+
+    private updateContactActivity(data: any) {
+        const contact = this.contacts.find((c) => c.user.id === data.userId);
+        if (!contact) {
+            return;
+        }
+
+        const index = this.contacts.indexOf(contact);
+
+        Vue.set(this.contacts[index].user, 'active', data.active);
     }
 
     private openSearch(state: boolean) {

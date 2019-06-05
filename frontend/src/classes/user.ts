@@ -11,6 +11,7 @@ export default class User {
     public username: string;
     public password: string;
     public contacts: ContactRow[];
+    public active: boolean;
 
     constructor(id: string, username: string, password: string, contacts: ContactRow[]) {
         this.id = id;

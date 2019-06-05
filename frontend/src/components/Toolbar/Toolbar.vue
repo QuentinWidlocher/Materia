@@ -5,7 +5,23 @@
             <v-icon v-if="button.action === 'back'">arrow_back</v-icon>
             <v-icon v-if="button.action === 'sidenav'">menu</v-icon>
         </v-toolbar-side-icon>
-        <v-toolbar-title>{{ title | capitalize }}</v-toolbar-title>
+
+        <!-- Display a title -->
+        <template v-if="title && !user">
+            <v-toolbar-title>{{ title | capitalize }}</v-toolbar-title>
+        </template>
+
+        <!-- Display username and avatar -->
+        <template v-if="!title && user">
+            <v-avatar color="grey lighten-1" size="40" class="ml-2">
+                <v-icon dark>person</v-icon>
+                <transition name="scale-transition">
+                    <div class="badge" v-if="user.active"></div>
+                </transition>
+            </v-avatar>
+            <v-toolbar-title class="ml-3">{{ user.username | capitalize }}</v-toolbar-title>
+        </template>
+
         <v-spacer></v-spacer>
         <v-btn
             :ripple="showSearchBox"

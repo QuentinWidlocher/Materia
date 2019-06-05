@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="globalVariables.darkMode">
+  <v-app :dark="globalVariables.darkMode" class="elevation-2">
     <v-content>
       <transition :name="transitionName">
         <keep-alive exclude="Login">

@@ -33,9 +33,14 @@ export default class Conversation extends Vue {
     private messages: Message[] = [];
     private messagesLoading: boolean = true;
 
+    private activeTimeout: any;
+
     private mounted() {
         // We bind the message receiving to a function
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
+
+        // We bind the activity change to a function
+        SocketInstance.on('activity', (data: any) => this.updateContactActivity(data));
     }
 
     private activated() {
@@ -65,6 +70,8 @@ export default class Conversation extends Vue {
 
             }).then(() => {
                 this.scrollToBottom();
+                (this.$refs.messages as Element).removeEventListener('scroll', () => userService.checkActive());
+                (this.$refs.messages as Element).addEventListener('scroll', () => userService.checkActive());
             });
         });
     }
@@ -102,8 +109,8 @@ export default class Conversation extends Vue {
 
         // For now, we just ignore if the message doesn't concern us
         // TODO: Use rooms to send messages to concerned people only
-        if ((message.from !== userService.currentUser.id && message.from !== this.interlocutor.id)
-            && (message.to !== userService.currentUser.id && message.to !== this.interlocutor.id)) {
+        if ((message.from !== userService.currentUser.id || message.from !== this.interlocutor.id)
+            && (message.to !== userService.currentUser.id || message.to !== this.interlocutor.id)) {
             return;
         }
 
@@ -158,6 +165,14 @@ export default class Conversation extends Vue {
 
     private clearMessage() {
         this.message = '';
+    }
+
+    private updateContactActivity(data: any) {
+        if (this.interlocutor.id !== data.userId) {
+            return;
+        }
+
+        Vue.set(this.interlocutor, 'active', data.active);
     }
 
 }

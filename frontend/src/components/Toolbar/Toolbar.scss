@@ -3,6 +3,28 @@
 
     .main-toolbar {
         z-index: 1;
+
+        .badge {
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            float: right;
+            right: 0;
+            bottom: 0;
+            background-color: var(--v-primary-base);
+            border-radius: 50%;
+            
+            &::before {
+                content: "";
+                width: 13px;
+                height: 13px;
+                background-color: var(--v-backgroundLight-base);
+                position: absolute;
+                border-radius: 50%;
+                left: 1.5px;
+                top: 1.5px;
+            }
+        }
     }
 
 }

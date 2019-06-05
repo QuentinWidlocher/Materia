@@ -9,7 +9,32 @@
 
     .v-list {
         height: 100%;
-        background: inherit;
+
+        .badge {
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            float: right;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background-color: var(--v-backgroundLight-base);
+
+            &.dark {
+                background-color: var(--v-backgroundDark-base);
+            }
+
+            &::before{
+                content: "";
+                width: 13px;
+                height: 13px;
+                background-color: var(--v-primary-base);
+                position: absolute;
+                border-radius: 50%;
+                left: 1.5px;
+                top: 1.5px;
+            }
+        }
 
         .v-list__tile__sub-title {
             display: flex;
