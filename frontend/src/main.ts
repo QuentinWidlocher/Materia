@@ -4,6 +4,7 @@ import router from '@/router';
 import '@/plugins/vuetify';
 import '@/plugins/socketio';
 import '@/plugins/vue2-filters';
+import '@/plugins/vue-virtual-scroller';
 import Vue2Filters from 'vue2-filters';
 import Axios from 'axios';
 import { tokenService } from './services/TokenService';

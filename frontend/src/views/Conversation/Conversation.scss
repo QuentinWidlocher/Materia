@@ -18,18 +18,19 @@
             overflow-x: hidden;
             padding-top: 1rem;
             padding-bottom: 1rem;
-            margin-bottom: -2.5rem;
+            // margin-bottom: -2.5rem;
     
-            &::-webkit-scrollbar {
-                width: 0 !important;
-                overflow: -moz-scrollbars-none;
-                -ms-overflow-style: none;
-            }
+            // &::-webkit-scrollbar {
+            //     width: 0 !important;
+            //     overflow: -moz-scrollbars-none;
+            //     -ms-overflow-style: none;
+            // }
         }
     
         .input {
             position: relative;
             bottom: -2rem;
+            margin-top: -2rem;
             flex-grow: 0;
         }
     }

@@ -111,7 +111,6 @@ def message(message):
 # On user activity changed
 @socketio.on("activity")
 def activity(data):
-    print(f"User {data['userId']} is {'active' if data['active'] else 'inactive'}")
     ctrl.edit_user(data["userId"], { "active": data["active"]})
 
     # We transmit the activity to everyone else

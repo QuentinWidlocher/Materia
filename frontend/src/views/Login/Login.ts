@@ -58,9 +58,11 @@ export default class Login extends Vue {
             if (!authenticatedUser) {
                 return;
             }
-            userService.currentUser = authenticatedUser;
 
-            router.go(-1);
+            axios.get(ApiConfig.userUnique.replace(':id', authenticatedUser.id)).then((response2) => {
+                userService.currentUser = response2.data;
+                router.go(-1);
+            });
 
         });
     }

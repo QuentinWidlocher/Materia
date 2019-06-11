@@ -13,6 +13,27 @@
           :width="3"
         ></v-progress-circular>
 
+        <!-- <DynamicScroller
+          :items="messages"
+          :min-item-size="45"
+          :itemSize="null" 
+        >
+          <template v-slot="{ item, index, active }">
+            <DynamicScrollerItem
+              :item="item"
+              :active="active"
+              :data-active="active"
+              :data-index="index"
+              :size-dependencies="[
+                item.body,
+              ]"
+              :title="new Date(item.dateSent * 1000)"
+            >
+              <Talkbubble :message="item" :align="item.from === interlocutor.id ? 'left' : 'right'"/>
+            </DynamicScrollerItem>
+          </template>
+        </DynamicScroller> -->
+
       <div ref="messages" class="message-list" v-if="!messagesLoading">
         <Talkbubble v-for="message in messages" :message="message" v-bind:key="message.id" :align="message.from === interlocutor.id ? 'left' : 'right'"/>
       </div>
