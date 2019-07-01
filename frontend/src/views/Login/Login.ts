@@ -58,10 +58,8 @@ export default class Login extends Vue {
             if (!authenticatedUser) {
                 return;
             }
-            userService.currentUser = authenticatedUser;
 
             router.go(-1);
-
         });
     }
 
