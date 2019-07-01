@@ -7,6 +7,7 @@ import '@/plugins/vue2-filters';
 import Vue2Filters from 'vue2-filters';
 import Axios from 'axios';
 import { tokenService } from './services/TokenService';
+import './registerServiceWorker';
 
 Vue.use(require('vue-moment'));
 
