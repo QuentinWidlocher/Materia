@@ -18,7 +18,7 @@ export default class App extends Vue {
 
     @Watch('$route')
     private onRouteChange(to: Route, from: Route) {
-        if (from.name === 'login' || to.name === 'login') {
+        if (from.name === 'home' || to.name === 'home') {
             this.transitionName = 'fade-transition';
             return;
         }

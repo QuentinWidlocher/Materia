@@ -1,5 +1,4 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import Toolbar from '@/components/Toolbar/Toolbar';
 import axios, { AxiosResponse } from 'axios';
 import ApiConfig from '@/ApiConfig.ts';
 import router from '@/router';
@@ -7,23 +6,19 @@ import { userService } from '@/services/UserService.ts';
 import { tokenService } from '@/services/TokenService.ts';
 import User from '@/classes/user';
 import { sha256 } from 'js-sha256';
+import { RawLocation } from 'vue-router';
 
 @Component({
     components: {
-        Toolbar,
     },
 })
 export default class Login extends Vue {
 
-    private title: string = 'Login';
+    @Prop() private username: string;
+    @Prop() private id: string;
 
     private valid: boolean = false;
     private loading: boolean = false;
-
-    private username: string = '';
-    private usernameRules = [
-        (v: string) => !!v || 'Name is required',
-    ];
 
     private password: string = '';
     private passwordRules = [
@@ -35,6 +30,7 @@ export default class Login extends Vue {
     private error: string = '';
 
     private login() {
+
         this.error = '';
         this.loading = true;
 
@@ -43,7 +39,7 @@ export default class Login extends Vue {
         }
 
         axios.post(ApiConfig.userLogin, {
-            username: this.username,
+            id: this.id,
             password: sha256(this.password),
         }).then((response: AxiosResponse) => {
 
@@ -59,7 +55,7 @@ export default class Login extends Vue {
                 return;
             }
 
-            router.go(-1);
+            router.replace({name: 'contacts'});
         });
     }
 

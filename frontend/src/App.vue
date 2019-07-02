@@ -2,7 +2,7 @@
   <v-app :dark="globalVariables.darkMode" class="elevation-2">
     <v-content>
       <transition :name="transitionName">
-        <keep-alive exclude="Login">
+        <keep-alive exclude="Home">
           <router-view/>
         </keep-alive>
       </transition>

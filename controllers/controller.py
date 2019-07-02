@@ -35,6 +35,10 @@ def get_all_users():
 def get_user(id):
     return json.dumps(user_ctrl.get_user(database, id))
 
+# Returns a user with this phone number
+def get_user_by_phone(phone):
+    return json.dumps(user_ctrl.get_user_by_phone(database, phone))
+
 # Edit a user with this ID, using the body
 def edit_user(id, body):
     return json.dumps(user_ctrl.edit_user(database, id, body))

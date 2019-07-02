@@ -2,6 +2,7 @@ api_base = "/api"
 
 user_base           = api_base + "/users"
 user_unique         = user_base + "/<id>"
+user_unique_phone   = user_base + "/phone/<phone>"
 user_login          = user_base + "/login"
 
 message_base        = api_base + "/messages"

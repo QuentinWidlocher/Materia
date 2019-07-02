@@ -44,6 +44,13 @@ def get_all_users():
 def get_user(id):
     return ctrl.get_user(id), json
 
+# Get a user
+@app.route(routes.user_unique_phone + "/", methods=["GET"])
+@app.route(routes.user_unique_phone      , methods=["GET"])
+@cross_origin()
+def get_user_by_phone(phone):
+    return ctrl.get_user_by_phone(phone), json
+
 # Update a user
 @app.route(routes.user_unique + "/", methods=["PUT"])
 @app.route(routes.user_unique      , methods=["PUT"])

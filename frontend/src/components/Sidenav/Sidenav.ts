@@ -46,7 +46,7 @@ export default class Talkbubble extends Vue {
 
     private logout() {
         tokenService.deauthenticate();
-        router.push('login');
+        router.push('home');
     }
 
 }

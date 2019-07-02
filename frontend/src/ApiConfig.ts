@@ -4,6 +4,7 @@ export default class ApiConfig {
 
     public static userBase: string = ApiConfig.apiBase + '/users';
     public static userUnique: string = ApiConfig.userBase + '/:id';
+    public static userUniquePhone: string = ApiConfig.userBase + '/phone/:phone';
     public static userLogin: string = ApiConfig.userBase + '/login';
 
     public static messageBase: string = ApiConfig.apiBase + '/messages';

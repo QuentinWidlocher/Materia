@@ -1,14 +1,21 @@
 <template>
-    <div id="Conversation">
-        <Toolbar v-bind:title="title"></Toolbar>
+    <div id="Login">
+        <v-btn
+            flat
+            class="px-0"
+            v-on:click="$emit('hide', $event)"
+            >
+            <v-icon>arrow_back</v-icon> Go back
+        </v-btn>
+
         <v-container fluid class="pt-0 d-flex">
             <v-form
                 class="ma-auto"
                 ref="form"
                 v-model="valid"
-                lazy-validation
                 @keyup.enter.native="login"
             >
+                <h1 class="title mb-4">Welcome back {{username}} !</h1>
                 <v-alert
                     :value="error !== ''"
                     class="mb-3"
@@ -19,13 +26,7 @@
                     Unable to connect : {{ error | lowercase }}
                 </v-alert>
 
-                <v-text-field
-                    v-model="username"
-                    :rules="usernameRules"
-                    label="Username"
-                    autocomplete="username"
-                    required
-                ></v-text-field>
+                <input type="text" hidden/>
 
                 <v-text-field
                     v-model="password"
@@ -39,9 +40,11 @@
                 ></v-text-field>
 
                 <v-btn
-                    :disabled="!valid || loading"
                     :loading="loading"
+                    block
+                    type="button"
                     color="primary"
+                    class="mx-0"
                     @click="login"
                 >
                 Login

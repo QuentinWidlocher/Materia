@@ -13,6 +13,19 @@ def get_all_users(db):
 
     return users
 
+def get_user_by_phone(db, phone):
+    user = db['users'].order_by_child("phone").equal_to(phone).get()
+
+    print(f"FIND USER BY PHONE {phone}")
+
+    if not user:
+        return { "id": None }
+
+    print(list(user.values())[0]["username"])
+
+    return { "id": list(user.keys())[0], "username": list(user.values())[0]["username"] }
+    
+
 def get_user(db, id):
     user = db['users'].child(id).get()
 
@@ -32,12 +45,8 @@ def edit_user(db, id, body):
     return db['users'].child(id).update(body)
 
 def login(db, body):
-    user = db['users'].order_by_child("username").equal_to(body["username"]).get()
 
-    if not user:
-        return {"valid": False, "error": "Username not found"}
-
-    user = get_user(db, list(user.keys())[0])
+    user = get_user(db, body["id"])
 
     # We don't need to pass the users in the jwt
     if "contacts" in user:
