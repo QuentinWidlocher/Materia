@@ -109,8 +109,7 @@ export default class Conversation extends Vue {
 
         // For now, we just ignore if the message doesn't concern us
         // TODO: Use rooms to send messages to concerned people only
-        if ((message.from !== userService.currentUser.id || message.from !== this.interlocutor.id)
-            && (message.to !== userService.currentUser.id || message.to !== this.interlocutor.id)) {
+        if (!(message.from === this.interlocutor.id && message.to === userService.currentUser.id)) {
             return;
         }
 

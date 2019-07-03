@@ -7,15 +7,14 @@
             >
             <v-icon>arrow_back</v-icon> Go back
         </v-btn>
-
-        <v-container fluid class="pt-0 d-flex">
-            <v-form
+            <div class="form-wrap mx-3">
+                <v-form
                 class="ma-auto"
                 ref="form"
                 v-model="valid"
                 @keyup.enter.native="login"
             >
-                <h1 class="title mb-4">Welcome back {{username}} !</h1>
+            <h1 class="display-1 mb-5">Welcome back {{username}} !</h1>
                 <v-alert
                     :value="error !== ''"
                     class="mb-3"
@@ -41,7 +40,6 @@
 
                 <v-btn
                     :loading="loading"
-                    block
                     type="button"
                     color="primary"
                     class="mx-0"
@@ -50,7 +48,7 @@
                 Login
                 </v-btn>
             </v-form>
-        </v-container>
+        </div>
     </div>
 </template>
 <style lang="scss" scoped src="./Login.scss"></style>
