@@ -15,7 +15,7 @@ const router = new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
-    { path: '/', redirect: { name: 'home' }},
+    { path: '/', redirect: { name: 'contacts' }},
     { path: '/contacts', name: 'contacts', component: Contacts },
     { path: '/conversation/:interlocutorId', name: 'conversation', component: Conversation, props: true },
     { path: '/home', name: 'home', component: Home },
@@ -27,12 +27,10 @@ router.beforeEach((to, from, next) => {
 
   // If the user is not authenticated or if the token is expired, move him to the login page
   if (to.name !== 'home' && !userService.currentUser && !authenticatedUser) {
-    console.log('user is not authenticated and userService is empty');
     next({name: 'home'});
   }
 
   if (authenticatedUser && !userService.currentUser) {
-    console.log('user is authenticated but userService is empty');
     Axios.get(ApiConfig.userUnique.replace(':id', authenticatedUser.id)).then((response) => {
       userService.currentUser = response.data;
       next();

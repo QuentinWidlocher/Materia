@@ -59,6 +59,13 @@ def get_user_by_phone(phone):
 def edit_user(id):
     return ctrl.edit_user(id, request.get_json()), json
 
+# Create user
+@app.route(routes.user_base + "/", methods=["POST"])
+@app.route(routes.user_base      , methods=["POST"])
+@cross_origin()
+def create_user():
+    return ctrl.create_user(request.get_json()), json
+
 # Try to login
 @app.route(routes.user_login + "/", methods=["POST"])
 @app.route(routes.user_login      , methods=["POST"])

@@ -14,7 +14,7 @@
                 v-model="valid"
                 @keyup.enter.native="login"
             >
-            <h1 class="display-1 mb-5">Welcome back {{username}} !</h1>
+            <h1 class="display-1 mb-4">Welcome back {{username}} !</h1>
                 <v-alert
                     :value="error !== ''"
                     class="mb-3"

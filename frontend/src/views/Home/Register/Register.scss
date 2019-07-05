@@ -1,7 +1,16 @@
-.container {
+#Register {
     height: 100vh;
 
-    h1 {
-        text-align: center;
+    .form-wrap {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        // width: 100%;
+
+        form {
+            button {
+                width: 100%;
+            }
+        }
     }
 }

@@ -43,6 +43,10 @@ def get_user_by_phone(phone):
 def edit_user(id, body):
     return json.dumps(user_ctrl.edit_user(database, id, body))
 
+# Edit a user with this ID, using the body
+def create_user(body):
+    return json.dumps(user_ctrl.create_user(database, body))
+
 # Try to login
 def login(body):
     return json.dumps(user_ctrl.login(database, body))

@@ -44,6 +44,25 @@ def get_user(db, id):
 def edit_user(db, id, body):
     return db['users'].child(id).update(body)
 
+def create_user(db, body):
+    user = dict()
+    user["active"] = False
+    user["password"] = body["password"]
+    user["phone"] = body["phone"]
+    user["username"] = body["username"]
+    user["contacts"] = []
+
+    # We add the user    
+    added_user = db["users"].push()
+    added_user.set(user)
+
+    user["id"] = added_user.key
+
+    print(f"ADD USER {added_user.key}")
+
+    return login(db, user)
+
+
 def login(db, body):
 
     user = get_user(db, body["id"])

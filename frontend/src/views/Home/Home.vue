@@ -8,7 +8,7 @@
       </template>
 
       <template v-if="activePage === 'register'">
-        <Register v-on:hide="activePage = 'home'"/>
+        <Register :phone="code + phone" v-on:hide="activePage = 'home'"/>
       </template>
     </transition>
 
@@ -28,6 +28,7 @@
               prefix="+"
               v-model="code" 
               error-count="0"
+              mask="##"
               :rules="codeRules" 
               label="Code"
               required>
@@ -37,6 +38,8 @@
               ref="phone"
               type="number"
               class="phone" 
+              error-count="0"
+              mask="#########"
               v-model="phone" 
               :rules="phoneRules" 
               label="Phone number" 

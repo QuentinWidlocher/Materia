@@ -33,8 +33,6 @@ export default class Home extends Vue {
     private username: string;
     private id: string;
 
-    private mounted() {}
-
     @Watch('code')
     private onCodeChange(val: string) {
         // We focus the phone field when the use typed typed 2 char
@@ -62,7 +60,6 @@ export default class Home extends Vue {
                 this.activePage = 'login';
             }
 
-            console.log(this.activePage);
             this.loading = false;
         });
     }
