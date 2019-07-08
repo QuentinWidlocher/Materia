@@ -1,5 +1,5 @@
 from helpers import async_no_wait
-from controllers import user as user_ctrl
+from controllers.firebase_cloud_firestore import user as user_ctrl
 import time, json
 
 def get_messages(db, id_from, id_to):

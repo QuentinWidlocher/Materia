@@ -1,4 +1,5 @@
 export default class ApiConfig {
+    // public static urlBase: string = 'https://materia-chat.herokuapp.com';
     public static urlBase: string = 'http://127.0.0.1:5000';
     public static apiBase: string = ApiConfig.urlBase + '/api';
 

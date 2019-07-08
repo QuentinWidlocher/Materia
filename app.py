@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager, jwt_required
-from controllers import controller as ctrl
+from controllers.firebase_cloud_firestore import controller as ctrl
 import routes
 import datetime
 

@@ -1,7 +1,7 @@
 import firebase_admin
-from firebase_admin import credentials, db
+from firebase_admin import credentials, firestore
 from helpers import get_elapsed_time
-from controllers import user as user_ctrl, message as message_ctrl
+from controllers.firebase_cloud_firestore import user as user_ctrl, message as message_ctrl
 import json
 
 database = None
@@ -13,14 +13,16 @@ def init():
 
     # We use the credentials.json to connect to the Direbase database
     cred = credentials.Certificate("./credentials.json")
-    firebase_admin.initialize_app(cred, options={
-        'databaseURL': 'https://materia-87a70.firebaseio.com'
+    firebase_admin.initialize_app(cred, {
+        'projectId': 'materia-87a70'
     })
+
+    db = firestore.client()
 
     # We assign "tables" to the vars
     database = {
-        "users" : db.reference('users'),
-        "messages" : db.reference('messages'),
+        "users" : db.collection('users'),
+        "messages" : db.collection('messages'),
     }
 
 
@@ -35,17 +37,9 @@ def get_all_users():
 def get_user(id):
     return json.dumps(user_ctrl.get_user(database, id))
 
-# Returns a user with this phone number
-def get_user_by_phone(phone):
-    return json.dumps(user_ctrl.get_user_by_phone(database, phone))
-
 # Edit a user with this ID, using the body
 def edit_user(id, body):
     return json.dumps(user_ctrl.edit_user(database, id, body))
-
-# Edit a user with this ID, using the body
-def create_user(body):
-    return json.dumps(user_ctrl.create_user(database, body))
 
 # Try to login
 def login(body):
