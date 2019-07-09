@@ -14,7 +14,6 @@ export class GlobalVariableService {
     }
 
     public set darkMode(state: boolean) {
-        console.log(state);
         this._darkMode = state;
         localStorage.setItem('darkmode', (state ? 'true' : 'false'));
     }

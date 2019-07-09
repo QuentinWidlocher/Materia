@@ -89,9 +89,7 @@ export default class Contacts extends Vue {
             return;
         }
 
-        console.log(this.contacts);
         let contact = this.contacts.find((c) => c.user.id === interlocutorId);
-        console.log(contact);
 
         // If the contact is not in our list, we refresh the user completely because we lack
         // data to add it otherwise

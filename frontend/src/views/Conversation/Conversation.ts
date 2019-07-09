@@ -8,7 +8,9 @@ import User from '@/classes/user';
 import ApiConfig from '@/ApiConfig.ts';
 import { userService } from '@/services/UserService.ts';
 import router from '@/router';
+import MessageApi from '@/services/api/MessageApi';
 import { globalVariableService } from '@/services/GlobalVariableService';
+import UserApi from '@/services/api/UserApi';
 
 @Component({
     components: {
@@ -35,6 +37,8 @@ export default class Conversation extends Vue {
 
     private activeTimeout: any;
 
+    private scrollToBottomOnce: boolean = false;
+
     private mounted() {
         // We bind the message receiving to a function
         SocketInstance.on('message', (message: any) => this.receiveMessage(message));
@@ -43,15 +47,25 @@ export default class Conversation extends Vue {
         SocketInstance.on('activity', (data: any) => this.updateContactActivity(data));
     }
 
+    private updated() {
+        if (this.scrollToBottomOnce && (this.$refs.messages as Element)) {
+            this.scrollToBottom();
+            (this.$refs.messages as Element).removeEventListener('scroll', () => userService.checkActive());
+            (this.$refs.messages as Element).addEventListener('scroll', () => userService.checkActive());
+
+            this.scrollToBottomOnce = false;
+        }
+    }
+
+    // On view focus
     private activated() {
         this.user = userService.currentUser;
-        console.log(this.user);
 
         this.scrollToBottom();
         this.messagesLoading = true;
 
         // First we load the interlocutor based on his ID
-        this.loadInterlocutor(this.interlocutorId).then((interlocutor) => {
+        UserApi.getUser(this.interlocutorId).then((interlocutor: User) => {
 
             // We store the interlocutor
             this.interlocutor = interlocutor;
@@ -61,39 +75,22 @@ export default class Conversation extends Vue {
 
             return interlocutor;
 
-        }).then((interlocutor) => {
+        }).then((interlocutor: User) => {
 
-            // We fetch the messages from the server and display them
-            this.loadMessages(interlocutor, this.user).then((messages) => {
-                this.messages = messages;
+            // We fetch the messages from the cache, display them, then update them with messages from the server
+            MessageApi.getDiscussion(this.user.id, interlocutor.id).then((response: { cache: Message[], server: Promise<Message[]> }) => {
+
+                this.messages = response.cache;
                 this.messagesLoading = false;
 
-            }).then(() => {
-                this.scrollToBottom();
-                (this.$refs.messages as Element).removeEventListener('scroll', () => userService.checkActive());
-                (this.$refs.messages as Element).addEventListener('scroll', () => userService.checkActive());
+                this.scrollToBottomOnce = true;
+                return response.server;
+
+            }).then((messages: Message[]) => {
+
+                // We update the messages with messages from the server (fresh data)
+                this.messages = messages;
             });
-        });
-    }
-
-    private loadInterlocutor(id: string): Promise<User> {
-        return new Promise((rslv) => {
-            axios.get(ApiConfig.userUnique.replace(':id', id)).then((interlocutor) => {
-                rslv(interlocutor.data as User);
-            });
-        });
-    }
-
-    private loadMessages(interlocutor: User, user: User): Promise<Message[]> {
-
-        return new Promise((rslv) => {
-
-            // We fetch the messages in the interlocutor -> user direction
-            return axios.get(ApiConfig.messageDirection.replace(':idFrom', interlocutor.id).replace(':idTo', user.id))
-            .then((response: AxiosResponse) => {
-                rslv(response.data as Message[]);
-            });
-
         });
     }
 
