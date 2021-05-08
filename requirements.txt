@@ -4,7 +4,7 @@ certifi==2019.3.9
 chardet==3.0.4
 Click==7.0
 dnspython==1.16.0
-eventlet==0.25.0
+eventlet==0.31.0
 firebase-admin==2.17.0
 Flask==1.0.3
 Flask-Cors==3.0.7
